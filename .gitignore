@@ -1,1 +1,4 @@
 .claude/
+# local only: project notes for Claude and design docs (kept in your files, not on GitHub)
+CLAUDE.md
+private/
