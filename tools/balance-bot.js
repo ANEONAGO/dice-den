@@ -18,6 +18,8 @@ const A=process.argv.slice(2),flag=(k,d)=>{const i=A.indexOf('--'+k);return i<0|
 if(has('help')||has('h')){console.log(fs.readFileSync(__filename,'utf8').split('\n').slice(1,11).join('\n').replace(/^\/\/ ?/gm,''));process.exit(0)}
 const OPT={runs:Math.max(1,+flag('runs',300)||300),seed:String(flag('seed','BOT')).toUpperCase(),out:flag('out',path.join('private','balance-report.md')),verbose:has('verbose'),min:+flag('min',8)||8,one:flag('one',null)};
 
+// --pricex '{"f":0.6,"e":0.6,"z":0.6,"ld":0.6}': shop price multipliers by offer kind (f faces, e charms, z seals, ld, c charts, v rules, pk packs, rr, slot, gam, r relics)
+const PRICEX=JSON.parse(flag('pricex','{}'));
 // ---------- Bot policy: the one place that decides how the bot plays ----------
 // It is copied into the sandbox as JSON, so keep it to numbers, strings, booleans and arrays.
 const POLICY={
@@ -187,6 +189,8 @@ function makeSandbox(policy){
  ctx.window=ctx;vm.createContext(ctx);
  vm.runInContext(src,ctx,{filename:'game.html',lineOffset:lineOffset-1});
  vm.runInContext(STUBS,ctx,{filename:'balance-bot-stubs.js'});
+ // price experiments: every offer the shop makes (and remakes on a reroll) is scaled by kind before the bot sees it
+ if(Object.keys(PRICEX).length)vm.runInContext(`const PRICEX=${JSON.stringify(PRICEX)},_mo=makeOffers;makeOffers=function(){_mo();offers.forEach(o=>{const k=o.id=='rr'||o.id=='ld'||o.id=='slot'||o.id=='gam'?o.id:o.id.startsWith('pk')?'pk':o.id[0],x=PRICEX[k];if(x!=null)o.c=Math.max(0,Math.round(o.c*x))})}`,ctx);
  if(!policy.bets)vm.runInContext('makeBets=function(){return[]}',ctx);// the bet odds simulation is the slowest thing in a round; skip it when the bot never bets
  const mk=vm.runInContext('('+BOT.toString()+')',ctx,{filename:'balance-bot.js'});
  return mk(vm.runInContext('('+JSON.stringify(policy)+')',ctx));
@@ -206,7 +210,7 @@ function report(runs,meta,policy,ms){
  const strong=[],weak=[];const note=(label,s,f)=>{if(f!='STRONG'&&f!='WEAK')return;(f=='STRONG'?strong:weak).push({t:`${label}: ${pct(s.winP)} win rate (${s.wins}/${s.n}) against ${pct(s.exp)} expected, ${num(s.ratio,2)}x`,r:s.ratio})};
  const cell=(a,b)=>a+' / '+b;
  const out=[];
- out.push('# Dice Den balance report','',`Generated ${new Date().toISOString().slice(0,16).replace('T',' ')} UTC by tools/balance-bot.js. ${runs.length} runs, seeds ${runs[0]&&runs[0].seed}..${runs[runs.length-1]&&runs[runs.length-1].seed}, ${meta.setName}, Player-style rules (win = clearing round ${meta.cfg.win}). ${(ms/1000).toFixed(1)}s (${(ms/Math.max(1,runs.length)).toFixed(0)} ms/run). Crashes: ${crashed.length}.`,'');
+ out.push('# Dice Den balance report','',`Generated ${new Date().toISOString().slice(0,16).replace('T',' ')} UTC by tools/balance-bot.js.${Object.keys(PRICEX).length?' Prices scaled '+JSON.stringify(PRICEX)+'.':''} ${runs.length} runs, seeds ${runs[0]&&runs[0].seed}..${runs[runs.length-1]&&runs[runs.length-1].seed}, ${meta.setName}, Player-style rules (win = clearing round ${meta.cfg.win}). ${(ms/1000).toFixed(1)}s (${(ms/Math.max(1,runs.length)).toFixed(0)} ms/run). Crashes: ${crashed.length}.`,'');
  out.push('## Baseline','',table(['Runs','Wins','Win rate','Avg round reached','Avg rounds cleared','Throws/run','Rerolls/run','Relics/run','Dice at end','$ at end'],[[n,wins,pct(base.winP),num(base.avgRound),num(base.avgCleared),num(mean(ok.map(r=>r.throws))),num(mean(ok.map(r=>r.rerolls))),num(mean(ok.map(r=>r.nrel))),num(mean(ok.map(r=>r.dice))),num(mean(ok.map(r=>r.money)),0)]]),'');
  const lost={};ok.filter(r=>r.over).forEach(r=>lost[r.round]=(lost[r.round]||0)+1);const rounds=Object.keys(lost).map(Number).sort((a,b)=>a-b);
  out.push('Where runs end (round the target was missed):','',table(['Round',...rounds,'Won'],[['Runs',...rounds.map(r=>lost[r]),wins],['Share',...rounds.map(r=>pct(lost[r]/n)),pct(base.winP)]]),'');
