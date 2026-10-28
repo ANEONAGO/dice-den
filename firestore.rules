@@ -12,7 +12,8 @@ service cloud.firestore {
         && d.tot is number && d.tot >= 0
         && d.best is number && d.best >= 0 && d.best <= d.tot
         && d.set is string && d.set.size() <= 12
-        && d.pts is number && d.pts == d.round * 10000000000 + d.tot;
+        // past 2^53 the game sends doubles, so the sum may round: allow a relative error of one part in a billion
+        && d.pts is number && math.abs(d.pts - (d.round * 10000000000 + d.tot)) <= d.pts / 1000000000;
     }
     function okWrite() {
       return okScore(request.resource.data)
