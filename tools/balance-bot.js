@@ -174,7 +174,7 @@ slideToChain=function(){return false};
 gather=function(){return{then(f){f();return this}}};
 animBets=function(res){G.bets=[];return{then(f){f();return this}}};
 playScore=async function(){};centerAll=function(){};scatter=function(){};
-cloneFx=function(){};smashFx=function(){};burst=function(){};toast=function(){};countNums=function(){};buzz=function(){};
+cloneFx=function(){};smashFx=function(){};comboFx=async function(){};coinFx=function(){return{then(f){f();return this}}};burst=function(){};toast=function(){};countNums=function(){};buzz=function(){};
 caseRoll=async function(res){G.case=null;caseWin(res)};mergeAnim=async function(){};
 fbPut=async function(){};fbTop=async function(){return[]};fbDoc=async function(){return null};postRun=async function(){};checkUpdate=function(){};progress=function(){};
 `;
@@ -210,7 +210,7 @@ function report(runs,meta,policy,ms){
  const strong=[],weak=[];const note=(label,s,f)=>{if(f!='STRONG'&&f!='WEAK')return;(f=='STRONG'?strong:weak).push({t:`${label}: ${pct(s.winP)} win rate (${s.wins}/${s.n}) against ${pct(s.exp)} expected, ${num(s.ratio,2)}x`,r:s.ratio})};
  const cell=(a,b)=>a+' / '+b;
  const out=[];
- out.push('# Dice Den balance report','',`Generated ${new Date().toISOString().slice(0,16).replace('T',' ')} UTC by tools/balance-bot.js.${Object.keys(PRICEX).length?' Prices scaled '+JSON.stringify(PRICEX)+'.':''} ${runs.length} runs, seeds ${runs[0]&&runs[0].seed}..${runs[runs.length-1]&&runs[runs.length-1].seed}, ${meta.setName}, Player-style rules (win = clearing round ${meta.cfg.win}). ${(ms/1000).toFixed(1)}s (${(ms/Math.max(1,runs.length)).toFixed(0)} ms/run). Crashes: ${crashed.length}.`,'');
+ out.push('# Dice Den balance report','',`Generated ${new Date().toISOString().slice(0,16).replace('T',' ')} UTC by tools/balance-bot.js.${Object.keys(PRICEX).length?' Prices scaled '+JSON.stringify(PRICEX)+'.':''} ${runs.length} runs, seeds ${runs[0]&&runs[0].seed}..${runs[runs.length-1]&&runs[runs.length-1].seed}, ${meta.setName}, Player-style rules (win = clearing round ${meta.cfg.win}). ${(ms/1000).toFixed(1)}s (${(ms/Math.max(1,runs.length)).toFixed(0)} ms/run). Crashes: ${crashed.length}.${runs.filter(r=>!r.won&&!r.over&&!r.err).length?` Stalled (neither won nor lost, check --one on these): ${runs.filter(r=>!r.won&&!r.over&&!r.err).length}, e.g. ${runs.filter(r=>!r.won&&!r.over&&!r.err).slice(0,3).map(r=>r.seed).join(', ')}.`:''}`,'');
  out.push('## Baseline','',table(['Runs','Wins','Win rate','Avg round reached','Avg rounds cleared','Throws/run','Rerolls/run','Relics/run','Dice at end','$ at end'],[[n,wins,pct(base.winP),num(base.avgRound),num(base.avgCleared),num(mean(ok.map(r=>r.throws))),num(mean(ok.map(r=>r.rerolls))),num(mean(ok.map(r=>r.nrel))),num(mean(ok.map(r=>r.dice))),num(mean(ok.map(r=>r.money)),0)]]),'');
  const lost={};ok.filter(r=>r.over).forEach(r=>lost[r.round]=(lost[r.round]||0)+1);const rounds=Object.keys(lost).map(Number).sort((a,b)=>a-b);
  out.push('Where runs end (round the target was missed):','',table(['Round',...rounds,'Won'],[['Runs',...rounds.map(r=>lost[r]),wins],['Share',...rounds.map(r=>pct(lost[r]/n)),pct(base.winP)]]),'');
