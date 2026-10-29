@@ -5,13 +5,16 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function okScore(d) {
-      return d.keys().hasOnly(['name', 'pts', 'round', 'tot', 'best', 'set'])
+      return d.keys().hasOnly(['name', 'pts', 'round', 'tot', 'best', 'set', 'v', 'day'])
         && d.keys().hasAll(['name', 'pts', 'round', 'tot', 'best', 'set'])
         && d.name is string && d.name.matches('^[A-Za-z0-9 _.-]{1,16}$') && !d.name.lower().matches('.*(fuck|shit|cunt|nigg|fagg|retard|rapist|nazi|hitler|kike|chink|whore|slut|bitch|pussy|penis|porn|twat|wank).*')
         && d.round is int && d.round >= 1 && d.round <= 500
         && d.tot is number && d.tot >= 0
         && d.best is number && d.best >= 0 && d.best <= d.tot
         && d.set is string && d.set.size() <= 12
+        // v: the build the run was played on; day: set on daily runs in runs/
+        && (!('v' in d) || (d.v is string && d.v.size() <= 24))
+        && (!('day' in d) || (d.day is string && d.day.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')))
         // past 2^53 the game sends doubles, so the sum may round: allow a relative error of one part in a billion
         && d.pts is number && math.abs(d.pts - (d.round * 10000000000 + d.tot)) <= d.pts / 1000000000;
     }
@@ -23,6 +26,17 @@ service cloud.firestore {
     match /scores/{player} {
       allow read: if true;
       allow create, update: if okWrite();
+      allow delete: if false;
+    }
+    // every run: runs/{player}_{runstamp} (a run that posts twice, at the win and at the end, replaces its own entry with the higher score)
+    match /runs/{run} {
+      allow read: if true;
+      allow create, update: if run.matches('^[a-z0-9]{20}_[a-z0-9]{4,12}$') && okWrite();
+      allow delete: if false;
+    }
+    match /days/{day}/runs/{run} {
+      allow read: if true;
+      allow create, update: if day.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$') && run.matches('^[a-z0-9]{20}_[a-z0-9]{4,12}$') && okWrite();
       allow delete: if false;
     }
     // daily boards: days/2026-10-25/scores/{player}
