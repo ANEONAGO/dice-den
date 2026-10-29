@@ -93,7 +93,7 @@ function FUZZ(){
   return js}
 
  // the save/resume round trip: what render() saves, loaded back the way the game loads it. Differences outside the transient panel fields are findings
- const TRANS=['case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce'];
+ const TRANS=['case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce','dm'];
  function roundTrip(){const pend=G.case,sv=JSON.parse(JSON.stringify({G:{...G,lb:null},offers})),want=JSON.parse(JSON.stringify(sv.G));resume(sv);flush();
   if(pend){if(pend!='dud'&&RL[pend]&&!G.relics.includes(pend))bad('resume','a case won mid-spin was lost on reload');return}
   const got=JSON.parse(JSON.stringify(G));const keys=new Set([...Object.keys(want),...Object.keys(got)]);
@@ -132,7 +132,7 @@ function FUZZ(){
   if(!bar.length)return 'nothing';const r=pick(bar);openRel(r);sellRel(r);sellRel(r);return 'sold '+r}
  function moveSomething(){const g=layout(),keys=Object.keys(G.pos||{});if(!keys.length)return 'nothing';const k=pick(keys),dir=chance(.5)?1:-1;moveRel(k,dir);return 'moved '+k+' '+dir}
  function ringSomething(){const m=circus();if(!m)return 'no ring';openMerge(m.n);if(m.slot&&chance(.35)){ringOut();return 'ring out'}const L=ringable();if(!L.length)return 'nothing ringable';const r=pick(L);ringIn(r);return 'ring in '+r}
- function menus(){const k=ri(5);if(k==0){G.menu=true;G.mt=pick(['combos','sets','rules','records','settings']);render();G.menu=false}else if(k==1){G.col=true;render();G.col=false}else if(k==2){G.bm=true;render();G.bm=false}
+ function menus(){const k=ri(5);if(k==0){G.menu=true;G.mt=pick(['combos','sets','rules','records','settings']);render();G.menu=false}else if(k==1){G.col=true;render();G.col=false;G.dm=true;render();G.dm=false}else if(k==2){G.bm=true;render();G.bm=false}
   else if(k==3&&G.relics.length){const r=pick(G.relics);inMerge(r)?openMerge((G.merged.find(m=>m.rel.includes(r))||{}).n):openRel(r)}else{G.notes=true;render();G.notes=false}render();G.rp=null;G.sc=false;return 'menu '+k}
 
  // ----- actions by phase: [weight, name, fn]; fn returns a short note for the trail -----
