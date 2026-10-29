@@ -12,4 +12,5 @@ globalThis.OUT='const RELICS='+JSON.stringify(RELIC.map(r=>[r.n,r.r,r.ph,clean(w
 // swap the two arrays in the Codex page
 const page=process.argv[3];let p=fs.readFileSync(page,'utf8');const a=p.indexOf('// relics: [name'),b=p.indexOf('const FSETS=');
 p=p.slice(0,a)+'// relics: [name, rarity, when, level 1, level 2, sets] (generated from game.html)\n'+ctx.OUT+'\n'+p.slice(b);fs.writeFileSync(page,p);
-console.log('relics',(ctx.OUT.match(/\],\[/g)||[]).length);
+// real counts (the old count of '],[' added the relic and set tables together)
+console.log('relics',(ctx.OUT.match(/^const RELICS=(.*);$/m)?JSON.parse(ctx.OUT.match(/^const RELICS=(.*);$/m)[1]).length:'?'),'sets',(ctx.OUT.match(/^const SETS=(.*);$/m)?JSON.parse(ctx.OUT.match(/^const SETS=(.*);$/m)[1]).length:'?'));
