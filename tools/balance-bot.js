@@ -199,7 +199,7 @@ function BOT(P){
 // stubs run after the game script: animations resolve at once, sound and the online boards do nothing
 const STUBS=`
 muted=true;
-render=function(){syncMaxT();if(G&&G.case){const c=G.case;G.case=null;caseWin(c)}if(G&&G.mq)G.mq.length=0};
+render=function(){syncMaxT();if(G&&G.phase=='bet'&&!G.betOpts)G.betOpts=makeBets(G.betX);if(G&&G.case){const c=G.case;G.case=null;caseWin(c)}if(G&&G.mq)G.mq.length=0};
 toss=function(free,done){free.forEach(d=>{d.f=d.fin;d.r=0;d.x=0});busy=false;done()};
 slideToChain=function(){return false};
 gather=function(){return{then(f){f();return this}}};
