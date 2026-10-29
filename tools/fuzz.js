@@ -143,17 +143,14 @@ function FUZZ(){
    L.push([2,'bag-tap',()=>{const bag=G.dice.map((d,i)=>[d,i]).filter(([d])=>!d.thr&&!d.stuck);if(!bag.length)return 'empty';const [d,i]=pick(bag);tap(i);return 'tap '+i+(swarmFree(d)?' (swarm, out='+d.out+')':'')}]);
    L.push([cloneSet().length?2:0,'pickClones',()=>{pickClones();return ''}]);
    L.push([.5,'shackle-bag',()=>{const k=G.dice.findIndex(d=>d.keep);if(k>=0)shackle(k);return 'release '+k}]);
-  }else if(P=='idle'&&G.thrown&&!G.pick){
+  }else if(P=='idle'&&G.thrown){
    L.push([8,'score',()=>{let L2=null;if(chance(RUN.skill))L2=bestPick();else{const tb=shufL(thrown());const n=1+ri(Math.min(G.maxT+(army()?3:0),tb.length));G.dice.forEach(d=>{d.sel=false});tb.slice(0,n).forEach(([d,i])=>tap(i))}
      if(L2)setPick(L2);if(!pickCheck().ok){const b=bestPick();if(!b)return 'no legal pick';setPick(b)}const n=T().length;doScoreChecked();return 'scored '+n}]);
-   L.push([G.rerolls>0?4:0,'reroll',()=>{G.pick=true;render();const tb=shufL(thrown());tb.slice(0,1+ri(Math.min(7,tb.length))).forEach(([d,i])=>tap(i));if(chance(.1)){G.pick=false;G.dice.forEach(d=>d.rs=false);render();return 'cancel'}roll();return 'reroll'}]);
+   L.push([G.rerolls>0?4:0,'reroll',()=>{G.dice.forEach(d=>{d.sel=false});const tb=shufL(thrown());tb.slice(0,ri(Math.min(7,tb.length)+1)).forEach(([d,i])=>tap(i));if(chance(.1)){G.dice.forEach(d=>{d.sel=false});render();return 'cancel'}const n=T().length;rerollSel();return 'reroll '+n}]);
    L.push([2,'tap',()=>{const tb=thrown();if(!tb.length)return '';const [d,i]=pick(tb);tap(i);return 'tap '+i}]);
    L.push([cp('shackle')?2:0,'shackle',()=>{const tb=thrown();if(!tb.length)return '';const [d,i]=pick(tb);shackle(i);return 'shackle '+i}]);
    L.push([cloneSet().length?2:0,'pickClones',()=>{pickClones();return ''}]);
-  }else if(P=='idle'&&G.pick){
-   L.push([5,'reroll-go',()=>{const tb=shufL(thrown());tb.slice(0,1+ri(tb.length)).forEach(([d,i])=>tap(i));roll();if(G.pick){G.pick=false;G.dice.forEach(d=>d.rs=false);render()}return 'reroll'}]);
-   L.push([1,'reroll-cancel',()=>{G.pick=false;G.dice.forEach(d=>d.rs=false);render();return ''}]);
-   L.push([cloneSet().length?1:0,'pickClones',()=>{pickClones();return ''}]);
+   L.push([cloneSet().length&&G.rerolls>0?1:0,'rerollClones',()=>{pickClones();rerollSel();return ''}]);
   }else if(P=='bet'){
    L.push([5,'start',()=>{startRound();return ''}]);
    L.push([G.betOpts&&G.betOpts.length?3:0,'bet',()=>{const i=ri(G.betOpts.length),s=pick([1,3,5]);placeBet(i,s);return 'bet '+i+' $'+s}]);
