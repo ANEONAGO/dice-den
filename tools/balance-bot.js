@@ -38,7 +38,10 @@ const POLICY={
  maxRound:has('endless')?(+flag('max',100)||100):40,stopAtWin:!has('endless'),// stop once the win round is cleared, or at maxRound; --endless keeps playing (to --max, default 100)
  // --chase id,id (ids or names): hunt these relics. Saves up for them, rerolls the shop for them (up to chaseRR a shop), sells its cheapest
  // other relic to make room, prefers them in Relic Packs, buys Mystery Relics (up to chaseGam a shop) and rigs the case for them, and upgrades them first
- chase:String(flag('chase','')).split(',').map(s=>s.trim()).filter(Boolean),give:String(flag('give','')).split(',').map(s=>s.trim()).filter(Boolean),chaseRR:+flag('chaserr',4),chaseGam:+flag('chasegam',2),
+ chase:String(flag('chase','')).split(',').map(s=>s.trim()).filter(Boolean),give:String(flag('give','')).split(',').map(s=>s.trim()).filter(Boolean),chaseRR:+flag('chaserr',2),chaseGam:+flag('chasegam',2),
+ // gambling helpers (The Fence: no duds; Loaded Odds upgraded: half the duds). While chasing, the bot buys and upgrades them when they show up,
+ // and once it holds one it gambles up to chasePush Mystery Relics a shop (no saving up) to reach the rigged case
+ gambleHelp:['fence','loadedodds'],chasePush:+flag('chasepush',8),
  trace:!!flag('one',null)         // keep a round-by-round log in the run record (printed by --one)
 };
 try{Object.assign(POLICY,JSON.parse(flag('policy','{}')))}catch(e){console.error('--policy must be JSON: '+e.message);process.exit(1)}
@@ -123,13 +126,16 @@ function BOT(P){
  function makeRoom(){if(used()<G.slots)return true;const L=G.relics.filter(r=>!CH.includes(r)&&!inMerge(r)&&G.red[r]!='neg').sort((a,b)=>RANK[RAR[a]]-RANK[RAR[b]]||sellFor(a)-sellFor(b));if(!L.length)return false;G.sc=true;sellRel(L[0]);R.sold++;log(()=>`  shop: sold ${L[0]} to make room`);return used()<G.slots}
  function chasePolicy(){if(!CH.length)return;let rr=0,gam=0,g=0;
   while(G.phase=='shop'&&g++<60){
-   const up=CH.find(r=>G.relics.includes(r)&&lv(r)<2&&G.money>=upCost(r));if(up){upRel(up);R.chaseUp++;log(()=>`  chase: upgraded ${up}`);continue}
+   const help=P.gambleHelp.filter(r=>RL[r]),hO=offers.find(o=>isRelic(o)&&help.includes(o.id.slice(1))&&G.money>=o.c);if(hO&&makeRoom()){buyOffer(hO);R.helpers++;log(()=>`  chase: bought helper ${hO.id.slice(1)}`);continue}
+   const up=CH.concat(help).find(r=>G.relics.includes(r)&&lv(r)<2&&G.money>=upCost(r));if(up){upRel(up);R.chaseUp++;log(()=>`  chase: upgraded ${up}`);continue}
    const miss=missing();if(!miss.length)return;
    const o=offers.find(o=>isRelic(o)&&miss.includes(o.id.slice(1)));
    if(o){if(G.money<o.c||!makeRoom())return;buyOffer(o);log(()=>`  chase: bought ${o.id.slice(1)}`);continue}
    const pk=offers.find(o=>o.id=='pkrelic'&&G.money-o.c>=0);if(pk&&miss.some(id=>RAR[id]!='c')&&makeRoom()){buyOffer(pk);continue}
-   const gm=offers.find(o=>o.id=='gam');if(gm&&gam<P.chaseGam&&G.money-gm.c>=chaseCost()&&makeRoom()){if((G.gamT||0)>=RIGN&&!miss.includes(G.rig))G.rig=miss[0];buyOffer(gm);gam++;R.gambles++;continue}
-   if(rr<P.chaseRR&&G.money-srrCost()>=chaseCost()){shopRR();rr++;R.shopRR++;continue}
+   const gm=offers.find(o=>o.id=='gam'),push=help.some(r=>G.relics.includes(r)&&(r!='loadedodds'||lv(r)>1));if(gm&&gam<(push?P.chasePush:P.chaseGam)&&G.money-gm.c>=(push?0:chaseCost())&&makeRoom()){if((G.gamT||0)>=RIGN&&!miss.includes(G.rig))G.rig=miss[0];buyOffer(gm);gam++;R.gambles++;continue}
+   // pushing with full slots: the shop stocks no Mystery Relic, so make room and reroll the shop to bring one
+   if(push&&!gm&&gam<P.chasePush&&rr<P.chasePush&&G.money>=srrCost()+GAMBLE.c+2*(G.gamN||0)&&makeRoom()){shopRR();rr++;R.shopRR++;continue}
+   if(!push&&rr<P.chaseRR&&G.money-srrCost()>=chaseCost()){shopRR();rr++;R.shopRR++;continue}
    return}}
  function shopPolicy(){chasePolicy();const skip=new Set();let g=0;while(G.phase=='shop'&&g++<30){const o=chooseOffer(skip);if(!o)break;const m=G.money,n=offers.length;buyOffer(o);if(G.money==m&&offers.length==n)skip.add(o.id)}}
  function packPolicy(){
@@ -162,7 +168,7 @@ function BOT(P){
 
  // ----- one run -----
  function playRun(seed){
-  R={seed,won:false,over:false,round:1,cleared:0,sold:0,chaseUp:0,shopRR:0,gambles:0,up:{},relics:{},sets:{},rules:{},bosses:[],swaps:[],deals:[],throws:0,rerolls:0,bets:0,err:null,hist:[],money:0,maxThrow:0,dice:0,nrel:0,log:[]};
+  R={seed,won:false,over:false,round:1,cleared:0,sold:0,chaseUp:0,shopRR:0,gambles:0,helpers:0,up:{},relics:{},sets:{},rules:{},bosses:[],swaps:[],deals:[],throws:0,rerolls:0,bets:0,err:null,hist:[],money:0,maxThrow:0,dice:0,nrel:0,log:[]};
   bsr.v=hs(seed+'|bot');busy=false;
   PROF=loadProf('player');PROF.unl[P.set]=1;init(seed);pickSet(P.set);
   if(G.phase!='idle')throw new Error('could not pick the set '+P.set);giveL().forEach(({id,l})=>{if(!G.relics.includes(id)){addRelic(id);if(l>1)G.rlv[id]=2}});G.mq=[];log(()=>`round 1: target ${G.target}`);
@@ -241,8 +247,8 @@ function report(runs,meta,policy,ms){
  out.push(`Round reached: median ${q(.5)}, top quarter ${q(.75)}, top tenth ${q(.9)}, best ${RR[RR.length-1]||'-'}.${policy.stopAtWin?'':` Endless: runs keep going past the win, up to round ${policy.maxRound}.`}`,'');
  if(meta.chase.length){const got=id=>ok.filter(r=>r.relics[id]!=null),all=ok.filter(r=>meta.chase.every(id=>r.relics[id]!=null)),none=ok.filter(r=>!meta.chase.some(id=>r.relics[id]!=null)),nm=id=>(meta.relics.find(x=>x[0]==id)||[0,id])[1];
   const row=(lab,L)=>[lab,L.length,pct(L.length/n),pct(L.length?L.filter(r=>r.won).length/L.length:null),num(mean(L.map(r=>r.round))),L.length?L.map(r=>r.round).sort((a,b)=>a-b)[Math.floor(L.length/2)]:'-'];
-  out.push('## Chase','',`Chasing ${meta.chase.map(nm).join(', ')}. Per run on average: ${num(mean(ok.map(r=>r.shopRR)))} shop rerolls, ${num(mean(ok.map(r=>r.gambles)))} Mystery Relics, ${num(mean(ok.map(r=>r.sold)))} relics sold to make room.`,'',
-   table(['Cohort','Runs','Share','Win rate','Avg round reached','Median round'],[...meta.chase.map(id=>row('Got '+nm(id),got(id))),...meta.chase.map(id=>row('Upgraded '+nm(id),ok.filter(r=>r.up[id]))),...(meta.chase.length>1?[row('Got all of them',all)]:[]),row('Got none',none)]),'',
+  out.push('## Chase','',`Chasing ${meta.chase.map(nm).join(', ')}. Per run on average: ${num(mean(ok.map(r=>r.shopRR)))} shop rerolls, ${num(mean(ok.map(r=>r.gambles)))} Mystery Relics, ${pct(mean(ok.map(r=>r.helpers?1:0)))} of runs found a gambling helper (The Fence or Loaded Odds), ${num(mean(ok.map(r=>r.sold)))} relics sold to make room.`,'',
+   table(['Cohort','Runs','Share','Win rate','Avg round reached','Median round'],[row('Found a gambling helper',ok.filter(r=>r.helpers)),...meta.chase.map(id=>row('Got '+nm(id),got(id))),...meta.chase.map(id=>row('Upgraded '+nm(id),ok.filter(r=>r.up[id]))),...(meta.chase.length>1?[row('Got all of them',all)]:[]),row('Got none',none)]),'',
    meta.chase.map(id=>{const L=got(id);return `- ${nm(id)}: found by round ${L.length?num(mean(L.map(r=>r.relics[id]))):'-'} on average (median ${L.length?L.map(r=>r.relics[id]).sort((a,b)=>a-b)[Math.floor(L.length/2)]:'-'}).`}).join('\n'),'')}
  const lost={};ok.filter(r=>r.over).forEach(r=>lost[r.round]=(lost[r.round]||0)+1);const rounds=Object.keys(lost).map(Number).sort((a,b)=>a-b);
  out.push('Where runs end (round the target was missed):','',table(['Round',...rounds,'Won'],[['Runs',...rounds.map(r=>lost[r]),wins],['Share',...rounds.map(r=>pct(lost[r]/n)),pct(base.winP)]]),'');
@@ -278,7 +284,7 @@ function report(runs,meta,policy,ms){
   `- Shop: greedy, dearest first within a kind, in this order: ${policy.shopOrder.join(' > ')}; keeps $${policy.reserve} ($${policy.reserve+policy.alleyReserve} when a Back Alley follows the shop). Relics: set-completing first, then rarity. Charms and seals go on the first die without one. Packs: fanciest die, preferred face paint (${policy.facePref}), highest rarity relic, first chart; Arcana packs are skipped. It never buys or uses Arcana cards, never sells, never skips a round for a tag and never shackles a die.`,
   `- Back Alley: takes a random deal with ${pct(policy.alleyP)} chance. Bosses: with Pit Boss's Favour it swaps the boss (${Array.isArray(policy.swapBoss)?policy.swapBoss.join(', '):policy.swapBoss}). Bets: ${policy.bets?'$'+policy.betStake+' on the most likely option each round':'none (makeBets is skipped, so the loot stream differs from a real run on the same seed)'}.`,
   policy.stopAtWin?`- Runs stop at the win (round ${meta.cfg.win} cleared) and are counted as "round ${meta.cfg.win+1} reached"; a lost run reached the round it missed. Seeds replay exactly.`:`- Endless: runs keep playing past the win (round ${meta.cfg.win}) until they miss a target or reach round ${policy.maxRound}. A lost run reached the round it missed. Seeds replay exactly.`,
-  ...(meta.chase.length?[`- Chase: hunts ${meta.chase.join(', ')}. It saves the price of the cheapest missing one, rerolls the shop up to ${policy.chaseRR} times a shop, buys up to ${policy.chaseGam} Mystery Relics a shop (rigging the case after 10), takes them first from Relic Packs, sells its cheapest other relic to make room, and upgrades them before anything else.`]:[]),'');
+  ...(meta.chase.length?[`- Chase: hunts ${meta.chase.join(', ')}. It saves the price of the cheapest missing one, rerolls the shop (not while it holds a gambling relic) up to ${policy.chaseRR} times a shop, buys up to ${policy.chaseGam} Mystery Relics a shop (rigging the case after 10), takes them first from Relic Packs, sells its cheapest other relic to make room, and upgrades them before anything else.`]:[]),'');
  return out.join('\n');
 }
 
