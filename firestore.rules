@@ -7,7 +7,7 @@ service cloud.firestore {
     function okScore(d) {
       return d.keys().hasOnly(['name', 'pts', 'round', 'tot', 'best', 'set'])
         && d.keys().hasAll(['name', 'pts', 'round', 'tot', 'best', 'set'])
-        && d.name is string && d.name.matches('^[A-Za-z0-9 _.-]{1,16}$')
+        && d.name is string && d.name.matches('^[A-Za-z0-9 _.-]{1,16}$') && !d.name.lower().matches('.*(fuck|shit|cunt|nigg|fagg|retard|rapist|nazi|hitler|kike|chink|whore|slut|bitch|pussy|penis|porn|twat|wank).*')
         && d.round is int && d.round >= 1 && d.round <= 500
         && d.tot is number && d.tot >= 0
         && d.best is number && d.best >= 0 && d.best <= d.tot
@@ -41,6 +41,7 @@ service cloud.firestore {
         && request.resource.data.day is string && req == request.resource.data.day + '_' + req.split('_')[1]
         && request.resource.data.name is string && request.resource.data.name.matches('^[A-Za-z0-9 _.-]{1,16}$')
         && request.resource.data.text is string && request.resource.data.text.size() >= 1 && request.resource.data.text.size() <= 160
+        && !request.resource.data.text.lower().matches('.*(fuck|shit|cunt|nigg|fagg|retard|rapist|nazi|hitler|kike|chink|whore|slut|bitch|pussy|penis|porn|twat|wank).*') && !request.resource.data.name.lower().matches('.*(fuck|shit|cunt|nigg|fagg|retard|rapist|nazi|hitler|kike|chink|whore|slut|bitch|pussy|penis|porn|twat|wank).*')
         && exists(/databases/$(database)/documents/days/$(request.resource.data.day)/scores/$(req.split('_')[1]));
       allow delete: if false;
     }

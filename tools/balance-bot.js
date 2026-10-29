@@ -35,6 +35,7 @@ const POLICY={
  alleyP:Math.min(1,Math.max(0,+flag('alley',.5))),// chance to take a Back Alley deal (a random one of the three offered)
  bets:has('bets'),betStake:1,     // --bets: one $1 bet a round on the most likely option (off: no bets, makeBets is skipped)
  swapBoss:'always',               // Pit Boss's Favour: 'always', 'never' or a list of boss ids to swap away
+ stake:Math.max(1,+flag('stake',1)||1),// --stake 1..6: the stake every run is played at
  maxRound:has('endless')?(+flag('max',100)||100):40,stopAtWin:!has('endless'),// stop once the win round is cleared, or at maxRound; --endless keeps playing (to --max, default 100)
  // --chase id,id (ids or names): hunt these relics. Saves up for them, rerolls the shop for them (up to chaseRR a shop), sells its cheapest
  // other relic to make room, prefers them in Relic Packs, buys Mystery Relics (up to chaseGam a shop) and rigs the case for them, and upgrades them first
@@ -170,7 +171,7 @@ function BOT(P){
  function playRun(seed){
   R={seed,won:false,over:false,round:1,cleared:0,sold:0,chaseUp:0,shopRR:0,gambles:0,helpers:0,up:{},relics:{},sets:{},rules:{},bosses:[],swaps:[],deals:[],throws:0,rerolls:0,bets:0,err:null,hist:[],money:0,maxThrow:0,dice:0,nrel:0,log:[]};
   bsr.v=hs(seed+'|bot');busy=false;
-  PROF=loadProf('player');PROF.unl[P.set]=1;init(seed);pickSet(P.set);
+  PROF=loadProf('player');PROF.unl[P.set]=1;PROF.stake=6;init(seed);G.stake=P.stake;pickSet(P.set);
   if(G.phase!='idle')throw new Error('could not pick the set '+P.set);giveL().forEach(({id,l})=>{if(!G.relics.includes(id)){addRelic(id);if(l>1)G.rlv[id]=2}});G.mq=[];log(()=>`round 1: target ${G.target}`);
   const seen=()=>{G.relics.forEach(id=>{if(R.relics[id]==null)R.relics[id]=G.round});activeSets().forEach(s=>{if(R.sets[s.n]==null)R.sets[s.n]=G.round});G.vouch.forEach(v=>{if(R.rules[v]==null)R.rules[v]=G.round})};
   let g=0;
