@@ -52,7 +52,7 @@ function BOT(P){
  const bsr={v:0},brand=()=>mb(bsr);// the bot's own seeded RNG (alley and pack choices), separate from the game's streams
  const isRelic=o=>o.id[0]=='r'&&o.id!='rr';
  const kindOf=o=>isRelic(o)?'relic':o.id[0]=='c'?'chart':o.id=='rr'?'rr':o.id[0]=='v'?'rule':o.id[0]=='f'?'face':o.id[0]=='e'?'charm':o.id[0]=='z'?'seal':o.id=='ld'?'ld':o.id=='slot'?'slot':(o.id=='die'||o.id.startsWith('pk'))?'pack':o.id=='gam'?'gamble':o.id[0]=='o'?'arcana':'other';
- const RANK={c:0,u:1,r:2,l:3,m:4},val=d=>d.en=='stone'?0:dv(d);
+ const RANK={c:0,u:1,r:2,e:3,l:4},val=d=>d.en=='stone'?0:dv(d);
  let R=null;const log=P.trace?f=>R.log.push(f()):()=>{};// trace lines are built lazily, only with --one
  const names=L=>L.map(d=>d.en=='stone'?'S':dv(d)+(d.faces[d.f]!='n'?d.faces[d.f]:'')+(d.stuck?'*':'')).join(' ');
  // chased relics: ids or names, resolved against the game's RELIC list
