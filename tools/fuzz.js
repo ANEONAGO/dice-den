@@ -42,7 +42,7 @@ function FUZZ(){
   if(busy)v('busy','busy is still true after the action');
   if(!PHASES.includes(G.phase))v('phase','unknown phase '+G.phase);
   ['score','money','target','hands','rerolls','round'].forEach(k=>{if(typeof G[k]!='number'||!isFinite(G[k]))v('nan','G.'+k+' = '+G[k])});
-  if(G.money<-0.001)v('money','money went negative: '+G.money);
+  if(G.money<-0.001&&!(G.st&&G.st.debt))v('money','money went negative: '+G.money);// House Credit can leave you in debt (G.st.debt)
   if(G.hands<0)v('hands','G.hands < 0: '+G.hands);if(G.rerolls<0)v('rerolls','G.rerolls < 0: '+G.rerolls);
   if(!(G.target>0)||G.target!=Math.round(G.target))v('target','target not a positive integer: '+G.target);
   if(G.score!=Math.round(G.score))v('score','score not an integer: '+G.score);
