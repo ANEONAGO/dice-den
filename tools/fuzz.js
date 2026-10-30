@@ -246,7 +246,7 @@ fbPut=async function(){};fbTop=async function(){return[]};fbDoc=async function()
 {const _mb=makeBets;makeBets=function(){return __bets.on?_mb():[]}}
 `;
 function makeSandbox(){
- const html=fs.readFileSync(path.join(ROOT,'game.html'),'utf8'),m=html.match(/<script>([\s\S]*)<\/script><\/body>/);
+ const html=fs.readFileSync(fs.existsSync(path.join(ROOT,'src','game.html'))?path.join(ROOT,'src','game.html'):path.join(ROOT,'game.html'),'utf8'),m=html.match(/<script>([\s\S]*)<\/script><\/body>/);
  const src=m[1].replace(/\nboot\(\);\s*$/,'\n'),lineOffset=html.slice(0,m.index).split('\n').length;
  const noop=new Proxy(function(){},{get:(t,k)=>k===Symbol.toPrimitive?()=>'':k==='then'?undefined:noop,set:()=>true,apply:()=>noop,construct:()=>noop});
  const T=[];let ti=0;const clock={t:1.7e12};

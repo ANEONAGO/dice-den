@@ -2,3 +2,5 @@
 # local only: project notes for Claude and design docs (kept in your files, not on GitHub)
 CLAUDE.md
 private/
+# the readable game source (tools/build.js publishes an obfuscated game.html from it)
+src/
