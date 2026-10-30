@@ -27,7 +27,7 @@ header p{margin:10px auto 0;max-width:62ch;color:var(--muted)}
 .search input{flex:1;min-width:0;font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
 .search input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--brass2);outline-offset:2px}
 .count{font:600 12px var(--body);color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
-nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+nav{display:flex;flex-wrap:wrap;gap:6px;padding-bottom:2px}
 nav a{flex:none;font:600 12px var(--body);color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--panel)}
 nav a:hover{color:var(--brass2);border-color:var(--brass)}
 section{margin-top:34px;scroll-margin-top:110px}
@@ -37,7 +37,9 @@ h2 small{font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase
 .filters{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
 .filters button{font:600 12px var(--body);color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer}
 .filters button[aria-pressed="true"]{background:var(--brass);color:#1a0e06;border-color:var(--brass)}
-.tbox{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.tbox{border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+/* narrow screens: no sideways scrolling, each table row becomes a small card with its column names as labels (data-l, set below) */
+@media (max-width:760px){.tbox table,.tbox tbody,.tbox tr,.tbox td{display:block;width:auto}.tbox tr:has(th){display:none}.tbox tr{padding:10px 12px;border-bottom:1px solid #33231580}.tbox td{padding:2px 0;border:0}.tbox td[data-l]:not(:first-child)::before{content:attr(data-l) ': ';font:600 10.5px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.tbox td:first-child{font-weight:700}}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th{position:sticky;top:0;text-align:left;font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--panel2);padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
 td{padding:9px 12px;border-bottom:1px solid #33231580;vertical-align:top}
@@ -169,5 +171,8 @@ function apply(){const q=document.getElementById('q').value.trim().toLowerCase()
 document.getElementById('q').addEventListener('input',apply);
 document.querySelectorAll('.filters button').forEach(b=>b.addEventListener('click',()=>{rar=b.dataset.r;document.querySelectorAll('.filters button').forEach(x=>x.setAttribute('aria-pressed',x===b));apply()}));
 apply();
+// column names as labels for the stacked table rows on narrow screens (tables are rebuilt by the filters, so this follows every change)
+const lab=()=>document.querySelectorAll('.tbox table').forEach(t=>{const h=[...t.querySelectorAll('th')].map(x=>x.textContent);t.querySelectorAll('tr').forEach(r=>[...r.children].forEach((c,i)=>{if(c.tagName=='TD'&&c.dataset.l!=h[i])c.dataset.l=h[i]||''}))});
+lab();new MutationObserver(lab).observe(document.body,{childList:true,subtree:true});
 </script>
 </body></html>
