@@ -74,7 +74,7 @@ function FUZZ(){
    if(!(d.f>=0&&d.f<=5&&d.f==Math.floor(d.f)))v('dice','bad face index '+d.f);if(d.en&&!EN[d.en])v('dice','unknown charm '+d.en);if(d.seal&&!SEALS[d.seal])v('dice','unknown seal '+d.seal)});
   const fam={};D.forEach(d=>{if(d.fam){const k=fam[d.fam];if(k&&k.join()!=d.faces.join())v('clones','a clone family has different faces');fam[d.fam]=d.faces}});
   if(D.some(d=>d.keep)&&!rel.includes('shackle'))v('shackle','a die stays shackled without Iron Shackle');
-  if(D.filter(d=>d.stuck&&!d.keep).length>G.cfg.stuckCap)v('chain','more chained dice than stuckCap');
+  if(!bossIs('rust')&&!(G.st&&G.st.rustRound==G.round)&&D.filter(d=>d.stuck&&!d.keep).length>G.cfg.stuckCap)v('chain','more chained dice than stuckCap');
   // arcana, tags
   (G.fort||[]).forEach(f=>{if(!FT(f))v('arcana','unknown Arcana '+f)});if(rel.includes('forger'))RUN.forged=1;if(G.fort.length>G.fcap&&!RUN.forged)v('arcana-cap','more Arcana cards than slots ('+G.fort.length+'/'+G.fcap+')');
   (G.tags||[]).forEach(t=>{if(!TG(t))v('tags','unknown tag '+t)});
