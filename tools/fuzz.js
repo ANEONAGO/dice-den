@@ -239,7 +239,7 @@ slideToChain=function(){return false};
 gather=function(){return{then(f){f();return this}}};
 animBets=function(res){G.bets=[];return{then(f){f();return this}}};
 playScore=async function(){};centerAll=function(){};scatter=function(){};
-cloneFx=function(){};smashFx=function(){};comboFx=async function(){};coinFx=function(){return{then(f){f();return this}}};burst=function(){};toast=function(){};countNums=function(){};buzz=function(){};
+cloneFx=function(){};smashFx=function(){};comboFx=async function(){};coinFx=function(){return{then(f){f();return this}}};skipFx=function(){return{then(f){f();return this}}};burst=function(){};toast=function(){};countNums=function(){};buzz=function(){};
 caseRoll=async function(res){G.case=null;caseWin(res)};mergeAnim=async function(){};
 {const _b=burnRel;burnRel=function(id){const u=used();_b(id);if(used()>u&&used()>G.slots)__spill.on=1}}
 fbPut=async function(){};fbTop=async function(){return[]};fbDoc=async function(){return null};postRun=async function(){};sendReq=async function(){};checkUpdate=function(){};
