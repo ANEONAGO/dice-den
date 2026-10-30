@@ -4,7 +4,8 @@ const fs=require('fs'),vm=require('vm');const html=fs.readFileSync(process.argv[
 let src=html.match(/<script>([\s\S]*)<\/script><\/body>/)[1].replace(/\nboot\(\);\s*$/,'\n');
 const noop=new Proxy(function(){},{get:(t,k)=>k===Symbol.toPrimitive?()=>'':noop,apply:()=>noop,construct:()=>noop});
 const ctx={document:noop,window:{},localStorage:{getItem:()=>null,setItem(){},removeItem(){}},navigator:{},matchMedia:()=>({matches:false}),performance:{now:()=>0},addEventListener(){},setTimeout(){},setInterval(){},requestAnimationFrame(){},innerWidth:1000,innerHeight:800,console};
-ctx.window=ctx;vm.createContext(ctx);vm.runInContext(src+`
+ctx.window=ctx;ctx.__tool=1;vm.createContext(ctx);// __tool: game.html skips its tamper check (seal, fromGame) in the sandbox
+vm.runInContext(src+`
 G={relics:[],rlv:{},grow:{},dice:[],red:{},merged:[],off:[],money:0,slots:5,cfg:{...CFG},fort:[]};
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1),clean=s=>cap(String(s).replace(/<[^>]+>/g,'').replace(/ \\(now[^)]*\\)/,'').replace(/\\s+/g,' ').trim());
 const L2=id=>{G.rlv[id]=2;const t=words(RL[id].d(2));delete G.rlv[id];return t};

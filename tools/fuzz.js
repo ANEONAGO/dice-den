@@ -255,7 +255,8 @@ function makeSandbox(){
   setInterval:()=>0,clearInterval(){},requestAnimationFrame:()=>0,cancelAnimationFrame(){},
   innerWidth:1000,innerHeight:800,devicePixelRatio:1,location:{hostname:'fuzz',protocol:'file:'},fetch:()=>new Promise(()=>{}),URL:{createObjectURL:()=>'',revokeObjectURL(){}},
   console:OPT.verbose?console:{log(){},warn(){},error(){},info(){}},__T:T,__clock:clock,__rnd:{v:1},__bets:{on:false},__watch:{e:flag('watch',null)},__hold:{case:0},__spill:{on:0}};
- ctx.window=ctx;vm.createContext(ctx);
+ ctx.window=ctx;ctx.__tool=1;vm.createContext(ctx);// __tool: game.html skips its tamper check (seal, fromGame) in the sandbox
+
  // seeded Math.random and a fake clock, so a seed replays exactly (bet odds, visual randomness, double-tap timing)
  vm.runInContext(`Math.random=function(){let t=(__rnd.v+=0x6D2B79F5)|0;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};{const _D=Date;Date=class extends _D{constructor(...a){a.length?super(...a):super(__clock.t)}static now(){return __clock.t}}}`,ctx);
  vm.runInContext(src,ctx,{filename:'game.html',lineOffset:lineOffset-1});

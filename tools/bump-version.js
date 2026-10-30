@@ -12,5 +12,10 @@ const p=n=>String(n).padStart(2,'0'),d=new Date(),build=`${d.getUTCFullYear()}.$
 const gf=path.join(root,'game.html');let h=fs.readFileSync(gf,'utf8');
 if(!/const BUILD='[^']*'/.test(h))throw new Error('BUILD line not found in game.html');
 h=h.replace(/const BUILD='[^']*'/,()=>`const BUILD='${build}'`);fs.writeFileSync(gf,h);
-fs.writeFileSync(path.join(root,'version.json'),JSON.stringify({build})+'\n');
+// the script's hash for this build (BUILD blanked), so a copy can tell whether its file was edited (game.html tamperBoot); the last 40 builds are kept
+const ih=s=>{let x=2166136261;for(let i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,16777619)}return(x>>>0).toString(36)};
+const src=h.match(/<script>([\s\S]*)<\/script><\/body>/)[1].replace(/const BUILD='[^']*'/,()=>"const BUILD=''");
+const vf=path.join(root,'version.json');let old={};try{old=JSON.parse(fs.readFileSync(vf,'utf8')).hashes||{}}catch(e){}
+const hashes=Object.fromEntries([...Object.entries(old),[build,ih(src)]].sort((a,b)=>a[0]<b[0]?-1:1).slice(-40));
+fs.writeFileSync(vf,JSON.stringify({build,hashes})+'\n');
 console.log('build',build);

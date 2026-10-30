@@ -217,7 +217,8 @@ function makeSandbox(policy){
   addEventListener(){},removeEventListener(){},setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){},requestAnimationFrame:()=>0,cancelAnimationFrame(){},
   innerWidth:1000,innerHeight:800,devicePixelRatio:1,location:{hostname:'balance-bot',protocol:'file:'},fetch:()=>new Promise(()=>{}),URL:{createObjectURL:()=>'',revokeObjectURL(){}},
   console:OPT.verbose?console:{log(){},warn(){},error(){},info(){}}};
- ctx.window=ctx;vm.createContext(ctx);
+ ctx.window=ctx;ctx.__tool=1;vm.createContext(ctx);// __tool: game.html skips its tamper check (seal, fromGame) in the sandbox
+
  vm.runInContext(src,ctx,{filename:'game.html',lineOffset:lineOffset-1});
  vm.runInContext(STUBS,ctx,{filename:'balance-bot-stubs.js'});
  // price experiments: every offer the shop makes (and remakes on a reroll) is scaled by kind before the bot sees it
