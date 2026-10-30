@@ -93,9 +93,9 @@ function FUZZ(){
   return js}
 
  // the save/resume round trip: what render() saves, loaded back the way the game loads it. Differences outside the transient panel fields are findings
- const TRANS=['case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce','dm'];
+ const TRANS=['tbl','case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce','dm'];
  function roundTrip(){const pend=G.case,sv=JSON.parse(JSON.stringify({G:{...G,lb:null},offers})),want=JSON.parse(JSON.stringify(sv.G));resume(sv);flush();
-  if(pend){if(pend!='dud'&&RL[pend]&&!G.relics.includes(pend))bad('resume','a case won mid-spin was lost on reload');return}
+  if(pend){if(pend!='dud'&&RL[pend]&&!G.relics.includes(pend)&&!(G.cw&&G.cw.id==pend))bad('resume','a case won mid-spin was lost on reload');return}
   const got=JSON.parse(JSON.stringify(G));const keys=new Set([...Object.keys(want),...Object.keys(got)]);
   keys.forEach(k=>{if(TRANS.includes(k))return;if(JSON.stringify(want[k])!==JSON.stringify(got[k]))bad('resume','resume changed G.'+k)})}
 
@@ -147,6 +147,8 @@ function FUZZ(){
    L.push([8,'score',()=>{let L2=null;if(chance(RUN.skill))L2=bestPick();else{const tb=shufL(thrown());const n=1+ri(Math.min(G.maxT+(army()?3:0),tb.length));G.dice.forEach(d=>{d.sel=false});tb.slice(0,n).forEach(([d,i])=>tap(i))}
      if(L2)setPick(L2);if(!pickCheck().ok){const b=bestPick();if(!b)return 'no legal pick';setPick(b)}const n=T().length;doScoreChecked();return 'scored '+n}]);
    L.push([G.rerolls>0?4:0,'reroll',()=>{G.dice.forEach(d=>{d.sel=false});const tb=shufL(thrown());tb.slice(0,ri(Math.min(7,tb.length)+1)).forEach(([d,i])=>tap(i));if(chance(.1)){G.dice.forEach(d=>{d.sel=false});render();return 'cancel'}const n=T().length;rerollSel();return 'reroll '+n}]);
+   L.push([G.rerolls>0?2:0,'rerollRest',()=>{const n=restSet().length;rerollRest();return 'rest '+n}]);
+   L.push([1,'deselAll',()=>{deselAll();return ''}]);
    L.push([2,'tap',()=>{const tb=thrown();if(!tb.length)return '';const [d,i]=pick(tb);tap(i);return 'tap '+i}]);
    L.push([cp('shackle')?2:0,'shackle',()=>{const tb=thrown();if(!tb.length)return '';const [d,i]=pick(tb);shackle(i);return 'shackle '+i}]);
    L.push([cloneSet().length?2:0,'pickClones',()=>{pickClones();return ''}]);
@@ -158,13 +160,18 @@ function FUZZ(){
    L.push([G.tagOff?1.5:0,'skip',()=>{skipRound();return 'skip'}]);
    L.push([G.boss&&vh('cut')&&!G.bossSw?3:0,'swapBoss',()=>{swapBoss();return 'now '+(G.boss&&G.boss.id)}]);
   }else if(P=='shop'){
+   if(G.cw)for(const k of ['keep','sell','re','re','no'])L.push([6,'cw-'+k,()=>{cwDo(k);return k+' '+(G.cw?G.cw.id:'')}]);
    L.push([5,'leave',()=>{nextRound();return ''}]);
+   L.push([G.bj&&G.bj.st=='play'?0:1.5,'spin',()=>{const s=pick([1,5,10,25,'all']);spin(s);return 'spin '+s+(G.tbl&&G.tbl.R?' '+G.tbl.R.join(''):'')}]);
+   L.push([G.bj&&G.bj.st=='play'?0:1.5,'bjDeal',()=>{const s=pick([1,5,10,'all']);bjDeal(s);return 'deal '+s}]);
+   if(G.bj&&G.bj.st=='play')for(const [k,f] of [['hit',bjHit],['stand',bjStand],['double',bjDouble]])L.push([4,'bj-'+k,()=>{f();return k+' '+(G.bj?G.bj.p.join('+')+' vs '+G.bj.d.join('+'):'')}]);
+   L.push([G.tbl&&!(G.bj&&G.bj.st=='play')?2:0,'tblLeave',()=>{tblLeave();return ''}]);
    L.push([offers.length?9:0,'buy',()=>{const ok=offers.map((o,i)=>[o,i]).filter(([o])=>G.money>=o.c);if(!ok.length)return 'broke';const [o,i]=pick(ok);if(o.id=='gam'&&chance(.25)){__hold.case=1;try{buy(i)}finally{__hold.case=0}if(G.case){RUN.cur='resume-case';roundTrip();return 'buy gam + reload mid-spin'}}else buy(i);
      if(G.dp!=null){if(chance(.1)){G.dp=null;render();return 'cancel '+o.id}dpPick(ri(G.dice.length))}return 'buy '+o.id}]);
    L.push([2,'shopRR',()=>{shopRR();return ''}]);
    L.push([G.relics.some(r=>lv(r)<2)?2:0,'upgrade',()=>{const L2=G.relics.filter(r=>lv(r)<2);const r=pick(L2);upRel(r);return 'up '+r}]);
    L.push([G.dice.length>5?1:0,'discard',()=>{const i=ri(G.dice.length);discardDie(i);if(chance(.8))discardDie(i);return 'discard '+i}]);
-   L.push([(G.gamT||0)>=RIGN&&offers.some(o=>o.id=='gam')?2:0,'rig',()=>{G.rigP=true;render();const L2=RELIC.filter(r=>!G.relics.includes(r.id)&&(r.id!='swarm'||swarmDue()));if(chance(.15)||!L2.length){rigCase(null);return 'unrig'}const r=pick(L2).id;rigCase(r);return 'rig '+r}]);
+   L.push([(G.gamT||0)>=RIGN&&offers.some(o=>o.id=='gam')?2:0,'rig',()=>{G.rigP=true;render();const L2=RELIC.filter(r=>chance(.1)?!G.relics.includes(r.id):partOf(r.id)&&rigOpen(r.r));if(chance(.15)||!L2.length){rigCase(null);return 'unrig'}const r=pick(L2).id;rigCase(r);return 'rig '+r}]);
   }else if(P=='pack'){const K=G.pk;
    if(K&&K.paint)L.push([6,'paint',()=>{const di=ri(G.dice.length),fi=ri(6);paintFace(di,fi);return 'paint '+di+':'+fi}]);
    else if(K)L.push([6,'packPick',()=>{if(!K.items.length){closePack(1);return 'empty'}const i=ri(K.items.length);pickPack(i);return 'pick '+i}]);
@@ -204,7 +211,7 @@ function FUZZ(){
   if(chance(.3))COMBOS.forEach(c=>{if(chance(.3))G.lv[c.id]=1+ri(3)});
   for(let j=ri(G.fcap+1);j>0;j--)gainF(pick(FORT).id);
   if(chance(.3))for(let j=1+ri(3);j>0;j--)G.tags.push(pick(TAGS).id);
-  if(chance(.2))G.gamT=RIGN+ri(3);
+  if(chance(.2))G.gamT=RIGN+ri(chance(.5)?3:60);
   // a late start: jump to round R through the shop, so the endless rounds and later bosses get played too
   if(chance(.3)){const r=chance(.5)?2+ri(30):25+ri(60);G.round=r-1;G.phase='shop';makeOffers();nextRound();rec.start=G.round}
   G.mq=[];render();flush();rec.relics=G.relics.length;rec.merged=(G.merged||[]).map(m=>m.n);rec.dice=G.dice.length;rec.fam=nf;return rec}
@@ -240,7 +247,7 @@ gather=function(){return{then(f){f();return this}}};
 animBets=function(res){G.bets=[];return{then(f){f();return this}}};
 playScore=async function(){};centerAll=function(){};scatter=function(){};
 cloneFx=function(){};smashFx=function(){};comboFx=async function(){};coinFx=function(){return{then(f){f();return this}}};skipFx=function(){return{then(f){f();return this}}};burst=function(){};toast=function(){};countNums=function(){};buzz=function(){};
-caseRoll=async function(res){G.case=null;caseWin(res)};mergeAnim=async function(){};
+caseRoll=async function(res){G.case=null;caseWin(res)};spinFx=function(){return{then(f){f();return this}}};mergeAnim=async function(){};
 {const _b=burnRel;burnRel=function(id){const u=used();_b(id);if(used()>u&&used()>G.slots)__spill.on=1}}
 fbPut=async function(){};fbTop=async function(){return[]};fbDoc=async function(){return null};postRun=async function(){};sendReq=async function(){};checkUpdate=function(){};
 {const _mb=makeBets;makeBets=function(){return __bets.on?_mb():[]}}

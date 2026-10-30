@@ -133,7 +133,7 @@ function BOT(P){
    const o=offers.find(o=>isRelic(o)&&miss.includes(o.id.slice(1)));
    if(o){if(G.money<o.c||!makeRoom())return;buyOffer(o);log(()=>`  chase: bought ${o.id.slice(1)}`);continue}
    const pk=offers.find(o=>o.id=='pkrelic'&&G.money-o.c>=0);if(pk&&miss.some(id=>RAR[id]!='c')&&makeRoom()){buyOffer(pk);continue}
-   const gm=offers.find(o=>o.id=='gam'),push=help.some(r=>G.relics.includes(r)&&(r!='loadedodds'||lv(r)>1));if(gm&&gam<(push?P.chasePush:P.chaseGam)&&G.money-gm.c>=(push?0:chaseCost())&&makeRoom()){if((G.gamT||0)>=RIGN&&!miss.includes(G.rig))G.rig=miss[0];buyOffer(gm);gam++;R.gambles++;continue}
+   const gm=offers.find(o=>o.id=='gam'),push=help.some(r=>G.relics.includes(r)&&(r!='loadedodds'||lv(r)>1));if(gm&&gam<(push?P.chasePush:P.chaseGam)&&G.money-gm.c>=(push?0:chaseCost())&&makeRoom()){if(!miss.includes(G.rig)){const m=miss.find(id=>partOf(id)&&rigOpen(RAR[id]));if(m)G.rig=m}buyOffer(gm);gam++;R.gambles++;continue}
    // pushing with full slots: the shop stocks no Mystery Relic, so make room and reroll the shop to bring one
    if(push&&!gm&&gam<P.chasePush&&rr<P.chasePush&&G.money>=srrCost()+GAMBLE.c+2*(G.gamN||0)&&makeRoom()){shopRR();rr++;R.shopRR++;continue}
    if(!push&&rr<P.chaseRR&&G.money-srrCost()>=chaseCost()){shopRR();rr++;R.shopRR++;continue}
@@ -199,14 +199,14 @@ function BOT(P){
 // stubs run after the game script: animations resolve at once, sound and the online boards do nothing
 const STUBS=`
 muted=true;
-render=function(){syncMaxT();for(let q=0;q<20&&G&&G.pj&&G.pj.length;q++){let di=G.dice.findIndex(d=>d.faces.includes("n"));if(di<0)di=0;paintPick(di,Math.max(0,G.dice[di].faces.lastIndexOf("n")))}if(G&&G.phase=='bet'&&!G.betOpts)G.betOpts=makeBets(G.betX);if(G&&G.case){const c=G.case;G.case=null;caseWin(c)}if(G&&G.mq)G.mq.length=0};
+render=function(){syncMaxT();for(let q=0;q<20&&G&&G.pj&&G.pj.length;q++){let di=G.dice.findIndex(d=>d.faces.includes("n"));if(di<0)di=0;paintPick(di,Math.max(0,G.dice[di].faces.lastIndexOf("n")))}if(G&&G.phase=='bet'&&!G.betOpts)G.betOpts=makeBets(G.betX);if(G&&G.case){const c=G.case;G.case=null;caseWin(c)}if(G&&G.cw)cwDo(fits(G.cw.id,G.cw.e)?'keep':'sell');if(G&&G.mq)G.mq.length=0};
 toss=function(free,done){free.forEach(d=>{d.f=d.fin;d.r=0;d.x=0});busy=false;done()};
 slideToChain=function(){return false};
 gather=function(){return{then(f){f();return this}}};
 animBets=function(res){G.bets=[];return{then(f){f();return this}}};
 playScore=async function(){};centerAll=function(){};scatter=function(){};
 cloneFx=function(){};smashFx=function(){};comboFx=async function(){};coinFx=function(){return{then(f){f();return this}}};skipFx=function(){return{then(f){f();return this}}};burst=function(){};toast=function(){};countNums=function(){};buzz=function(){};
-caseRoll=async function(res){G.case=null;caseWin(res)};mergeAnim=async function(){};
+caseRoll=async function(res){G.case=null;caseWin(res)};spinFx=function(){return{then(f){f();return this}}};mergeAnim=async function(){};
 fbPut=async function(){};fbTop=async function(){return[]};fbDoc=async function(){return null};postRun=async function(){};checkUpdate=function(){};progress=function(){};
 `;
 function makeSandbox(policy){
