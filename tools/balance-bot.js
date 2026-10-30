@@ -79,13 +79,13 @@ function BOT(P){
  }
  const applyPick=L=>{G.dice.forEach(d=>{d.sel=false;d.so=0;d.rs=false});L.forEach((d,j)=>{d.sel=true;d.so=j+1});G.soN=L.length};
  const shouldReroll=best=>{const need=G.target-G.score;if(best.total>=need||G.rerolls<=0)return false;return best.total<need/Math.max(1,G.hands)*P.rerollBelow};
- // mark the dice to throw again: keep the best combo (or the most common value when there is none), reroll the rest, lowest first, up to RRMAX
+ // mark the dice to throw again: keep the best combo (or the most common value when there is none), reroll the rest
  function markReroll(best){
   G.dice.forEach(d=>d.rs=false);const keep=new Set();
   if(best.id!='none'&&P.rerollKeepCombo)best.dice.forEach(d=>keep.add(d));
   else{const tb=G.dice.filter(d=>d.thr&&d.en!='stone'),cnt={};tb.forEach(d=>cnt[dv(d)]=(cnt[dv(d)]||0)+1);const v=Object.keys(cnt).map(Number).sort((a,b)=>cnt[b]-cnt[a]||b-a)[0];tb.forEach(d=>{if(dv(d)==v)keep.add(d)})}
   const can=G.dice.filter(d=>d.thr&&!keep.has(d)&&!(d.stuck&&(d.keep||!cp('dealer'))));let n=0;
-  can.sort((a,b)=>val(a)-val(b)).forEach(d=>{if(swarmFree(d))d.rs=true;else if(n<RRMAX){d.rs=true;n++}});
+  can.forEach(d=>d.rs=true);
   return G.dice.some(d=>d.rs);
  }
  function playRound(){
@@ -206,7 +206,7 @@ gather=function(){return{then(f){f();return this}}};
 animBets=function(res){G.bets=[];return{then(f){f();return this}}};
 playScore=async function(){};centerAll=function(){};scatter=function(){};
 cloneFx=function(){};smashFx=function(){};comboFx=async function(){};coinFx=function(){return{then(f){f();return this}}};skipFx=function(){return{then(f){f();return this}}};burst=function(){};toast=function(){};countNums=function(){};buzz=function(){};
-caseRoll=async function(res){G.case=null;caseWin(res)};spinFx=function(){return{then(f){f();return this}}};mergeAnim=async function(){};
+caseRoll=async function(res){G.case=null;caseWin(res)};spinFx=function(){return{then(f){f();return this}}};wheelFx=function(){return{then(f){f();return this}}};mergeAnim=async function(){};
 fbPut=async function(){};fbTop=async function(){return[]};fbDoc=async function(){return null};postRun=async function(){};checkUpdate=function(){};progress=function(){};
 `;
 function makeSandbox(policy){

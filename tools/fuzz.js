@@ -93,7 +93,7 @@ function FUZZ(){
   return js}
 
  // the save/resume round trip: what render() saves, loaded back the way the game loads it. Differences outside the transient panel fields are findings
- const TRANS=['tbl','case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce','dm'];
+ const TRANS=['tbl','whR','acct','case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce','dm'];
  function roundTrip(){const pend=G.case,sv=JSON.parse(JSON.stringify({G:{...G,lb:null},offers})),want=JSON.parse(JSON.stringify(sv.G));resume(sv);flush();
   if(pend){if(pend!='dud'&&RL[pend]&&!G.relics.includes(pend)&&!(G.cw&&G.cw.id==pend))bad('resume','a case won mid-spin was lost on reload');return}
   const got=JSON.parse(JSON.stringify(G));const keys=new Set([...Object.keys(want),...Object.keys(got)]);
@@ -165,6 +165,7 @@ function FUZZ(){
    L.push([G.bj&&G.bj.st=='play'?0:1.5,'spin',()=>{const s=pick([1,5,10,25,'all']);spin(s);return 'spin '+s+(G.tbl&&G.tbl.R?' '+G.tbl.R.join(''):'')}]);
    L.push([G.bj&&G.bj.st=='play'?0:1.5,'bjDeal',()=>{const s=pick([1,5,10,'all']);bjDeal(s);return 'deal '+s}]);
    if(G.bj&&G.bj.st=='play')for(const [k,f] of [['hit',bjHit],['stand',bjStand],['double',bjDouble]])L.push([4,'bj-'+k,()=>{f();return k+' '+(G.bj?G.bj.p.join('+')+' vs '+G.bj.d.join('+'):'')}]);
+   L.push([!G.whN&&G.relics.length&&!(G.bj&&G.bj.st=='play')?1.5:0,'wheel',()=>{G.tbl={k:'wheel'};G.whR=pick(G.relics);render();whSpin();return 'wheel '+(G.tbl&&G.tbl.S?G.tbl.S[G.tbl.i].k:'')}]);
    L.push([G.tbl&&!(G.bj&&G.bj.st=='play')?2:0,'tblLeave',()=>{tblLeave();return ''}]);
    L.push([offers.length?9:0,'buy',()=>{const ok=offers.map((o,i)=>[o,i]).filter(([o])=>G.money>=o.c);if(!ok.length)return 'broke';const [o,i]=pick(ok);if(o.id=='gam'&&chance(.25)){__hold.case=1;try{buy(i)}finally{__hold.case=0}if(G.case){RUN.cur='resume-case';roundTrip();return 'buy gam + reload mid-spin'}}else buy(i);
      if(G.dp!=null){if(chance(.1)){G.dp=null;render();return 'cancel '+o.id}dpPick(ri(G.dice.length))}return 'buy '+o.id}]);
@@ -247,7 +248,7 @@ gather=function(){return{then(f){f();return this}}};
 animBets=function(res){G.bets=[];return{then(f){f();return this}}};
 playScore=async function(){};centerAll=function(){};scatter=function(){};
 cloneFx=function(){};smashFx=function(){};comboFx=async function(){};coinFx=function(){return{then(f){f();return this}}};skipFx=function(){return{then(f){f();return this}}};burst=function(){};toast=function(){};countNums=function(){};buzz=function(){};
-caseRoll=async function(res){G.case=null;caseWin(res)};spinFx=function(){return{then(f){f();return this}}};mergeAnim=async function(){};
+caseRoll=async function(res){G.case=null;caseWin(res)};spinFx=function(){return{then(f){f();return this}}};wheelFx=function(){return{then(f){f();return this}}};mergeAnim=async function(){};
 {const _b=burnRel;burnRel=function(id){const u=used();_b(id);if(used()>u&&used()>G.slots)__spill.on=1}}
 fbPut=async function(){};fbTop=async function(){return[]};fbDoc=async function(){return null};postRun=async function(){};sendReq=async function(){};checkUpdate=function(){};
 {const _mb=makeBets;makeBets=function(){return __bets.on?_mb():[]}}
