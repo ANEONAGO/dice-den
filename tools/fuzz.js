@@ -93,7 +93,7 @@ function FUZZ(){
   return js}
 
  // the save/resume round trip: what render() saves, loaded back the way the game loads it. Differences outside the transient panel fields are findings
- const TRANS=['tbl','whR','acct','case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce','dm'];
+ const TRANS=['tbl','whR','acct','whPick','case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce','dm'];
  function roundTrip(){const pend=G.case,sv=JSON.parse(JSON.stringify({G:{...G,lb:null},offers})),want=JSON.parse(JSON.stringify(sv.G));resume(sv);flush();
   if(pend){if(pend!='dud'&&RL[pend]&&!G.relics.includes(pend)&&!(G.cw&&G.cw.id==pend))bad('resume','a case won mid-spin was lost on reload');return}
   const got=JSON.parse(JSON.stringify(G));const keys=new Set([...Object.keys(want),...Object.keys(got)]);
@@ -174,7 +174,7 @@ function FUZZ(){
    L.push([G.dice.length>5?1:0,'discard',()=>{const i=ri(G.dice.length);discardDie(i);if(chance(.8))discardDie(i);return 'discard '+i}]);
    L.push([(G.gamT||0)>=RIGN&&offers.some(o=>o.id=='gam')?2:0,'rig',()=>{G.rigP=true;render();const L2=RELIC.filter(r=>chance(.1)?!G.relics.includes(r.id):partOf(r.id)&&rigOpen(r.r));if(chance(.15)||!L2.length){rigCase(null);return 'unrig'}const r=pick(L2).id;rigCase(r);return 'rig '+r}]);
   }else if(P=='pack'){const K=G.pk;
-   if(K&&K.paint)L.push([6,'paint',()=>{const di=ri(G.dice.length),fi=ri(6);paintFace(di,fi);return 'paint '+di+':'+fi}]);
+   if(K&&K.paint)L.push([6,'paint',()=>{const di=ri(G.dice.length),fi=ri(6);if(K.paint.length>1){packDie(di);return 'pack die '+di}paintFace(di,fi);return 'paint '+di+':'+fi}]);
    else if(K)L.push([6,'packPick',()=>{if(!K.items.length){closePack(1);return 'empty'}const i=ri(K.items.length);pickPack(i);return 'pick '+i}]);
    L.push([1.5,'packSkip',()=>{closePack(1);return ''}]);
   }else if(P=='alley'){
@@ -207,7 +207,7 @@ function FUZZ(){
   // dice: extra dice, charms, seals, faces, loaded, clone families
   for(let j=ri(chance(.3)?8:3);j>0&&G.dice.length<MAXDICE;j--)G.dice.push(chance(.5)?newDie():mkDie(1+ri(6)));
   const ENK=Object.keys(EN),SK=Object.keys(SEALS);
-  G.dice.forEach(d=>{if(chance(.2))d.en=pick(ENK);if(chance(.15))d.seal=pick(SK);d.faces=d.faces.map(t=>chance(.1)?pick([...'mgxsh']):t);if(chance(.1))d.loaded=true});
+  G.dice.forEach(d=>{if(chance(.2))d.en=pick(ENK);if(chance(.15))d.seal=pick(SK);d.faces=d.faces.map(t=>chance(.1)?pick([...'mgsh']):t);if(chance(.1))d.loaded=true});
   const nf=chance(.4)?1+ri(2):0;for(let j=0;j<nf;j++){const src=pick(G.dice);famOf(src);const k=1+ri(12);for(let c=0;c<k&&G.dice.length<MAXDICE;c++){const cl=JSON.parse(JSON.stringify(src));Object.assign(cl,{thr:false,sel:false,stuck:0,keep:false,rs:false,pre:false,px:null,py:null,so:0});G.dice.push(cl)}}
   if(chance(.3))COMBOS.forEach(c=>{if(chance(.3))G.lv[c.id]=1+ri(3)});
   for(let j=ri(G.fcap+1);j>0;j--)gainF(pick(FORT).id);

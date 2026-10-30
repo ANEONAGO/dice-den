@@ -145,7 +145,7 @@ function BOT(P){
    const K=G.pk,it=K.items,k=K.kind;
    if(!it.length){closePack(1);break}
    if(k=='dice'||k=='mega'){if(G.dice.length>=MAXDICE){closePack(1);break}let bi=0;it.forEach((d,i)=>{if(fancy(d)>fancy(it[bi])||fancy(d)==fancy(it[bi])&&d.f>it[bi].f)bi=i});pickPack(bi)}
-   else if(k=='face'){if(K.paint){const s=plainSpots();if(!s.length){K.paint=null;closePack(1);break}const star=K.paint=='s';s.sort((a,b)=>(star?a[1]-b[1]:b[1]-a[1])||a[0]-b[0]);paintFace(s[0][0],s[0][1])}else{const want=[...P.facePref].find(t=>it.includes(t))||it[0];pickPack(it.indexOf(want))}}
+   else if(k=='face'){if(K.paint&&K.paint.length>1)packDie(Math.max(0,G.dice.findIndex(d=>K.paint[0]=='e'?!d.en:!d.seal)));else if(K.paint){const s=plainSpots();if(!s.length){K.paint=null;closePack(1);break}const star=K.paint=='s';s.sort((a,b)=>(star?a[1]-b[1]:b[1]-a[1])||a[0]-b[0]);paintFace(s[0][0],s[0][1])}else{const want=[...P.facePref].find(t=>it.includes(t))||it[0];pickPack(it.indexOf(want))}}
    else if(k=='relic'){const ok=it.filter(id=>used()<G.slots||K.ed&&K.ed[id]=='neg');if(!ok.length){closePack(1);break}const b=ok.find(id=>CH.includes(id))||ok.sort((a,b)=>RANK[RAR[b]]-RANK[RAR[a]])[0];pickPack(it.indexOf(b))}
    else if(k=='fort'){closePack(1);break}
    else pickPack(0);
