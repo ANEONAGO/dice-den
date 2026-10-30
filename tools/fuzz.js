@@ -165,7 +165,7 @@ function FUZZ(){
    L.push([G.bj&&G.bj.st=='play'?0:1.5,'spin',()=>{const s=pick([1,5,10,25,'all']);spin(s);return 'spin '+s+(G.tbl&&G.tbl.R?' '+G.tbl.R.join(''):'')}]);
    L.push([G.bj&&G.bj.st=='play'?0:1.5,'bjDeal',()=>{const s=pick([1,5,10,'all']);bjDeal(s);return 'deal '+s}]);
    if(G.bj&&G.bj.st=='play')for(const [k,f] of [['hit',bjHit],['stand',bjStand],['double',bjDouble]])L.push([4,'bj-'+k,()=>{f();return k+' '+(G.bj?G.bj.p.join('+')+' vs '+G.bj.d.join('+'):'')}]);
-   L.push([!G.whN&&G.relics.length&&!(G.bj&&G.bj.st=='play')?1.5:0,'wheel',()=>{G.tbl={k:'wheel'};G.whR=pick(G.relics);render();whSpin();return 'wheel '+(G.tbl&&G.tbl.S?G.tbl.S[G.tbl.i].k:'')}]);
+   L.push([whLeft()>0&&G.relics.length&&!(G.bj&&G.bj.st=='play')?1.5:0,'wheel',()=>{G.tbl={k:'wheel'};G.whR=pick(G.relics);render();whSpin();return 'wheel '+(G.tbl&&G.tbl.S?G.tbl.S[G.tbl.i].k:'')}]);
    L.push([G.tbl&&!(G.bj&&G.bj.st=='play')?2:0,'tblLeave',()=>{tblLeave();return ''}]);
    L.push([offers.length?9:0,'buy',()=>{const ok=offers.map((o,i)=>[o,i]).filter(([o])=>G.money>=o.c);if(!ok.length)return 'broke';const [o,i]=pick(ok);if(o.id=='gam'&&chance(.25)){__hold.case=1;try{buy(i)}finally{__hold.case=0}if(G.case){RUN.cur='resume-case';roundTrip();return 'buy gam + reload mid-spin'}}else buy(i);
      if(G.dp!=null){if(chance(.1)){G.dp=null;render();return 'cancel '+o.id}dpPick(ri(G.dice.length))}return 'buy '+o.id}]);
