@@ -121,7 +121,7 @@ function FUZZ(){
   while(G.fu&&g++<6){const u=G.fu,f=FT(G.fort[u.i]);if(!f){G.fu=null;break}
    if(u.step==0){G.fu=null;break}// Use refused (canF false): close
    if(id=='hammer'){tap(ri(G.dice.length));continue}
-   if(f.t=='relic'){if(!G.relics.length){G.fu=null;break}pickFR(pick(G.relics));if(G.fu&&chance(.5))G.fu=null;continue}
+   if(f.t=='relic'){if(!G.relics.length){G.fu=null;break}pickFR(pick(f.setOnly&&G.relics.some(inSet)&&chance(.8)?G.relics.filter(inSet):G.relics));if(G.fu&&chance(.5))G.fu=null;continue}
    if(id=='engraver'&&u.face!=null){engrave(fakeEv());continue}
    if((id=='engraver'||id=='carver')&&u.die!=null){pickF(u.die,ri(6));continue}
    const L=G.dice.map((d,di)=>di).filter(di=>id!='carver'&&id!='flipper'||G.dice[di].thr);if(!L.length){G.fu=null;break}
