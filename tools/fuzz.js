@@ -137,7 +137,7 @@ function FUZZ(){
 
  // ----- actions by phase: [weight, name, fn]; fn returns a short note for the trail -----
  const common=()=>[[G.fort.length?4:0,'arcana',useArcana],[G.relics.length?1.2:0,'sell',sellSomething],[G.relics.length?2:0,'move',moveSomething],[circus()?4:0,'ring',ringSomething],[1,'menu',menus]];
- function actions(){const P=G.phase,L=common();
+ function actions(){const P=G.phase,L=common();if(G.pj&&G.pj.length)L.push([8,'paint',()=>{const di=ri(G.dice.length),fi=ri(6);paintPick(di,fi);return 'paint '+di+','+fi}]);
   if(P=='idle'&&!G.thrown){
    L.push([6,'roll',()=>{if(needPick()){if(chance(.5))pickRand();else{const bag=G.dice.map((d,i)=>[d,i]).filter(([d])=>!d.stuck&&!swarmFree(d));shufL(bag).slice(0,room()).forEach(([d,i])=>tap(i))}}roll();return 'thrown '+G.dice.filter(d=>d.thr).length}]);
    L.push([2,'bag-tap',()=>{const bag=G.dice.map((d,i)=>[d,i]).filter(([d])=>!d.thr&&!d.stuck);if(!bag.length)return 'empty';const [d,i]=pick(bag);tap(i);return 'tap '+i+(swarmFree(d)?' (swarm, out='+d.out+')':'')}]);
