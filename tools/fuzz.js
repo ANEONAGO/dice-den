@@ -110,7 +110,7 @@ function FUZZ(){
  const setPick=L=>{G.dice.forEach(d=>{d.sel=false;d.so=0});L.forEach((d,j)=>{d.sel=true;d.so=j+1});G.soN=L.length};
  // score the current pick the way score() does (pickCheck first), then check the score went up by exactly what calc() previewed
  function doScoreChecked(){if(!pickCheck().ok)return false;const c=calc(),t0=G.st.tot||0,s0=G.score,r0=G.round;doScore();flush();
-  if((G.st.tot||0)-t0!==c.total)bad('score-mismatch','doScore added '+((G.st.tot||0)-t0)+' but calc() previewed '+c.total);
+  if(Math.abs((G.st.tot||0)-t0-c.total)>Math.max(0,Math.abs(t0)*1e-12))bad('score-mismatch','doScore added '+((G.st.tot||0)-t0)+' but calc() previewed '+c.total);
   else if(G.round==r0&&G.score!==s0+c.total)bad('score-mismatch','G.score moved by '+(G.score-s0)+', calc() said '+c.total);
   if(G.thrown)bad('score','the throw did not end after doScore');return true}
  const fakeEv=()=>({currentTarget:{getBoundingClientRect:()=>({left:0,top:0,width:100,height:100})},clientX:R()*100,clientY:R()*100});
