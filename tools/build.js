@@ -29,6 +29,7 @@ fs.writeFileSync(path.join(root,'game.html'),out);
 // FNV-1a over the UTF-16 code units, base 36: the same ih() as the game's tamper check
 const ih=s=>{let x=2166136261;for(let i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,16777619)}return(x>>>0).toString(36)};
 const vf=path.join(root,'version.json');let old={};try{old=JSON.parse(fs.readFileSync(vf,'utf8')).hashes||{}}catch(e){}
-const hashes=Object.fromEntries([...Object.entries(old),[build,ih(obf)]].sort((a,b)=>a[0]<b[0]?-1:1).slice(-40));
+// --no-stamp rebuilds under the live BUILD: keep the hash that build was published with, or every copy of it online is flagged as edited
+const hashes=Object.fromEntries([...Object.entries(old),[build,old[build]||ih(obf)]].sort((a,b)=>a[0]<b[0]?-1:1).slice(-40));
 fs.writeFileSync(vf,JSON.stringify({build,hashes})+'\n');
 console.log('build',build,'game.html',Math.round(out.length/1024)+' KB (source '+Math.round(h.length/1024)+' KB)');

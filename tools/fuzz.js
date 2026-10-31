@@ -93,7 +93,7 @@ function FUZZ(){
   return js}
 
  // the save/resume round trip: what render() saves, loaded back the way the game loads it. Differences outside the transient panel fields are findings
- const TRANS=['tbl','whR','acct','whPick','case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce','dm'];
+ const TRANS=['tbl','whR','acct','whPick','case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce','dm','cwR'];
  function roundTrip(){const pend=G.case,sv=JSON.parse(JSON.stringify({G:{...G,lb:null},offers})),want=JSON.parse(JSON.stringify(sv.G));resume(sv);flush();
   if(pend){if(pend!='dud'&&RL[pend]&&!G.relics.includes(pend)&&!(G.cw&&G.cw.id==pend))bad('resume','a case won mid-spin was lost on reload');return}
   const got=JSON.parse(JSON.stringify(G));const keys=new Set([...Object.keys(want),...Object.keys(got)]);
