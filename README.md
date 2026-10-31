@@ -17,7 +17,7 @@ It is in open beta. The most useful feedback is:
 - Bugs: what you did, what happened, and the seed from Settings or the run summary so it can be replayed.
 - How it runs on your phone (3D dice on or off).
 
-Report it under **Issues** on this repo, or wherever you found the link. Top of the daily board? The run summary lets you ask for an addition to the game.
+Use **Report a bug** on the main menu or in Settings: it fills in the build, seed and round for you and opens an issue here (or copies the report so you can post it wherever you found the link). You can also report it under **Issues** on this repo directly. Top of the daily board? The run summary lets you ask for an addition to the game.
 
 ## Running it yourself
 
