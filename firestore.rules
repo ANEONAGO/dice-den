@@ -55,6 +55,18 @@ service cloud.firestore {
         && request.resource.data.t is int
         && (!('v' in request.resource.data) || (request.resource.data.v is string && request.resource.data.v.size() <= 24));
     }
+    // bug reports from the game's Report a bug panel: anyone can send one, nobody can read, change or delete them from the game.
+    // Read them in the Firebase console (Firestore Database > Data > reports). who is the sender's board name when signed in, else empty
+    match /reports/{rep} {
+      allow create: if request.resource.data.keys().hasOnly(['text', 'info', 'v', 'at', 'who'])
+        && request.resource.data.keys().hasAll(['text', 'info', 'v', 'at'])
+        && request.resource.data.text is string && request.resource.data.text.size() >= 1 && request.resource.data.text.size() <= 2000
+        && request.resource.data.info is string && request.resource.data.info.size() <= 600
+        && request.resource.data.v is string && request.resource.data.v.size() <= 24
+        && request.resource.data.at is int
+        && (!('who' in request.resource.data) || (request.resource.data.who is string && request.resource.data.who.size() <= 20));
+      allow read, update, delete: if false;
+    }
     // the day's champion may leave one request for an addition to the game: requests/{day}_{player}
     // (there is no sign-in, so this only checks the shape and that the player has a score on that day's board)
     match /requests/{req} {
