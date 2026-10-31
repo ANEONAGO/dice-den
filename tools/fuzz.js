@@ -130,7 +130,7 @@ function FUZZ(){
  function sellSomething(){const bar=G.relics.filter(r=>!inMerge(r));const cards=G.merged||[];
   if(cards.length&&(!bar.length||chance(.25))){const m=pick(cards);openMerge(m.n);sellMerge(m.n);sellMerge(m.n);return 'sold card '+m.n}
   if(!bar.length)return 'nothing';const r=pick(bar);openRel(r);sellRel(r);sellRel(r);return 'sold '+r}
- function moveSomething(){const g=layout(),keys=Object.keys(G.pos||{});if(!keys.length)return 'nothing';const k=pick(keys),dir=chance(.5)?1:-1;moveRel(k,dir);return 'moved '+k+' '+dir}
+ function moveSomething(){const g=layout(),keys=Object.keys(G.pos||{});if(!keys.length)return 'nothing';const k=pick(keys),dir=chance(.5)?1:-1;moveRel(k,dir);if(G.merged.length&&chance(.4)){const m=pick(G.merged),r=pick(m.rel);mvIn(m.n,r,dir);return 'reordered '+r+' on '+m.n+' '+dir}return 'moved '+k+' '+dir}
  function ringSomething(){const m=circus();if(!m)return 'no ring';openMerge(m.n);if(m.slot&&chance(.35)){ringOut();return 'ring out'}const L=ringable();if(!L.length)return 'nothing ringable';const r=pick(L);ringIn(r);return 'ring in '+r}
  function menus(){const k=ri(5);if(k==0){G.menu=true;G.mt=pick(['combos','sets','rules','records','settings']);render();G.menu=false}else if(k==1){G.col=true;render();G.col=false;G.dm=true;render();G.dm=false}else if(k==2){G.bm=true;render();G.bm=false}
   else if(k==3&&G.relics.length){const r=pick(G.relics);inMerge(r)?openMerge((G.merged.find(m=>m.rel.includes(r))||{}).n):openRel(r)}else{G.notes=true;render();G.notes=false}render();G.rp=null;G.sc=false;return 'menu '+k}
