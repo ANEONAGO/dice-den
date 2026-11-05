@@ -1,0 +1,25 @@
+# Deploys the site to Firebase Hosting (https://dice-den-aab4d.web.app) on every push to master that changes a site file, so it serves
+# the same commit as GitHub Pages. firebase.json's predeploy step (tools/site.js) copies only the site files from this commit into site/
+# and refuses a game.html whose hash doesn't match version.json. The secret is a service account made by `firebase init hosting:github`.
+name: Deploy to Firebase Hosting
+on:
+  push:
+    branches: [master]
+    paths: [game.html, index.html, codex.html, version.json, 'art/**', firebase.json, .firebaserc, tools/site.js, .github/workflows/firebase-hosting.yml]
+  workflow_dispatch:
+# one deploy at a time, in push order (a newer push waits instead of racing an older one)
+concurrency:
+  group: firebase-hosting
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DICE_DEN_AAB4D }}
+          channelId: live
+          projectId: dice-den-aab4d
