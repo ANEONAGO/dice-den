@@ -1,4 +1,4 @@
-# Deploys the site to Firebase Hosting (https://dice-den-aab4d.web.app) on every push to master that changes a site file, so it serves
+# Deploys the site to Firebase Hosting (https://diceden.web.app; the project's default site dice-den-aab4d.web.app redirects there) on every push to master that changes a site file, so it serves
 # the same commit as GitHub Pages. firebase.json's predeploy step (tools/site.js) copies only the site files from this commit into site/
 # and refuses a game.html whose hash doesn't match version.json. The secret is a service account made by `firebase init hosting:github`.
 name: Deploy to Firebase Hosting
