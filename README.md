@@ -4,7 +4,7 @@
 
 A back-room dice roguelike in the browser. Roll seven dice, pick up to five that make a hand, chain the rest to the table, and beat the target before your throws run out. Between rounds you buy relics, charms, seals and house rules that bend the scoring, with bosses every fifth round and a seeded daily challenge with an online board.
 
-**Play it:** https://aneonago.github.io/dice-den/ (no account, no install, phone or desktop)
+**Play it:** https://aneonago.github.io/dice-den/ or https://dice-den-aab4d.web.app (the same build on both; no account, no install, phone or desktop). Progress saved only in the browser stays on the site you played on; sign in to carry it to the other.
 
 **Codex:** https://aneonago.github.io/dice-den/codex.html lists every relic, set, hand, card, boss and rule.
 
