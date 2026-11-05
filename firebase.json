@@ -18,7 +18,10 @@
       "public": "site",
       "predeploy": "node tools/site.js",
       "ignore": ["**/.*", "**/node_modules/**"],
-      "redirects": [{"source": "/:path*", "destination": "https://diceden.web.app/:path*", "type": 302}]
+      "redirects": [
+        {"source": "/", "destination": "https://diceden.web.app/", "type": 302},
+        {"source": "/:path*", "destination": "https://diceden.web.app/:path*", "type": 302}
+      ]
     }
   ]
 }
