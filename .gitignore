@@ -4,3 +4,7 @@ CLAUDE.md
 private/
 # the readable game source (tools/build.js publishes an obfuscated game.html from it)
 src/
+# Firebase Hosting: tools/site.js assembles site/ at deploy time; .firebase/ is the CLI's upload cache
+site/
+.firebase/
+firebase-debug*.log
