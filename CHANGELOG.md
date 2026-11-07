@@ -2,6 +2,13 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/ or https://diceden.web.app.
 
+## 2026-11-07: Hold an item for the next shop
+
+- Most shop cards now have a **Hold** button. It keeps that item for your next shop, but it isn't free: holding costs a quarter of the item's price now, the item costs a quarter more in the next shop, it takes the place of a new item on its shelf, and it is gone if you don't buy it there. One hold per shop; free items, the Mystery Relic, Extra Slots and an item that was already carried over can't be held.
+- When you reach the next shop, the message reminds you that your held item is on the shelf and this is its last chance. A held Star Chart shows the level your hand has by then.
+- New house rule, **Layaway Plan** ($6): holding is free, and the held item costs no more in your next shop (bought while an item is already carried over, it drops that item's surcharge too).
+- New achievement, **Layaway**: buy an item you held over from the shop before.
+
 ## 2026-11-07: Why to sign up
 
 - Signed out, the main menu now explains that Dice Den has more than one web address and that progress saved without an account stays on the address you played it on, while an account carries it to every address and device. The × hides the note for good. The Sign up panel says the same.

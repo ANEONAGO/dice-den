@@ -169,6 +169,7 @@ function FUZZ(){
    L.push([G.tbl&&!(G.bj&&G.bj.st=='play')?2:0,'tblLeave',()=>{tblLeave();return ''}]);
    L.push([offers.length?9:0,'buy',()=>{const ok=offers.map((o,i)=>[o,i]).filter(([o])=>G.money>=o.c);if(!ok.length)return 'broke';const [o,i]=pick(ok);if(o.id=='gam'&&chance(.25)){__hold.case=1;try{buy(i)}finally{__hold.case=0}if(G.case){RUN.cur='resume-case';roundTrip();return 'buy gam + reload mid-spin'}}else buy(i);
      if(G.dp!=null){if(chance(.1)){G.dp=null;render();return 'cancel '+o.id}dpPick(ri(G.dice.length))}return 'buy '+o.id}]);
+   L.push([offers.length?2:0,'hold',()=>{const ok=offers.map((o,i)=>[o,i]).filter(([o])=>holdOk(o));if(!ok.length)return 'none';const [o,i]=pick(ok);holdO(i);return 'hold '+o.id}]);
    L.push([2,'shopRR',()=>{shopRR();return ''}]);
    L.push([G.relics.some(r=>lv(r)<2)?2:0,'upgrade',()=>{const L2=G.relics.filter(r=>lv(r)<2);const r=pick(L2);upRel(r);return 'up '+r}]);
    L.push([G.dice.length>5?1:0,'discard',()=>{const i=ri(G.dice.length);discardDie(i);if(chance(.8))discardDie(i);return 'discard '+i}]);
