@@ -2,6 +2,33 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-07: Sets that change the rules, very hard achievements, achievement pop-ups
+
+- **Achievements are easier to see.**
+  - Earning one now shows a big banner at the top of the screen; the very hard ones are pink.
+  - The main menu has an **Achievements** tile that lists them all with your progress.
+- **Nine very hard achievements**: Beat the House, Den Legend, Flawless, Iron Nerve, Travel Light, Trillionaire, Globetrotter, Shape Master and Full Collection.
+- **New: Charmed Set.** Luck is on your side all run.
+  - Every chance is twice as likely, bets have no house edge, Mystery Relics never come up empty, and the gaming tables pay 10% more.
+  - Unlocks with **Beat the House**: win $2,500 from bets and gaming tables, counted across all your runs.
+- **Sets that only handed out dice bonuses now change the rules instead:**
+  - **Ember**: each throw in a round is hotter than the last (×1.5, then ×2 and so on), with 6 dice.
+  - **Bloodstone**: fall short and you can pay $3 per round number to stay at the table. The price doubles each time.
+  - **Twin**: every die you score scores twice, with up to 4 dice per throw.
+  - **Watchmaker**: each throw you have left when you clear a round adds +4 mult to every throw of the next round.
+  - **Clover**: every fourth throw you score is ×2.
+  - **Onyx**: the last throw of each round is ×3, and the first is ×0.5.
+  - **Sapphire**: every third time you score a hand, it levels up.
+  - **Bullion**: everything in the shop costs a quarter less.
+  - **Steel**: every throw is ×1.5, but you start with no rerolls.
+  - **Carnival**: a carnival prize every round you clear.
+- **Wild Set buffed**: you can now score up to 4 dice per throw (it was 3, with a 4th throw).
+- **Marble Set**: no more limit on the chips its dice gain, but Trail Marker never shows up in Marble runs.
+- **Clockwork Charm buffed** back up: +2 mult for every throw in a row, up to +10.
+- **Dice screen tabs** are now All sets, Unlocked and Shapes.
+- The Fat Wallet achievement added earlier today shared its name with an older one (Deep Pockets); it is now called **Fat Cat**.
+- Fixed: the Marble Set's description in the game was out of date.
+
 ## 2026-11-07: New dice screen, shape sets, reward sets
 
 - **A cleaner dice screen.** Every set is a tile, with tabs for Classic, Shapes, Hard and Rewards. Pick one to see what it does and how to unlock it.
