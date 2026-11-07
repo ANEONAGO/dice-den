@@ -2,6 +2,10 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-07: 3D polyhedral dice
+
+- With 3D dice on, the d4, d8, d12 and d20 are now real 3D dice: a tetrahedron, an octahedron, a dodecahedron and an icosahedron with numbered faces. They tumble, land with the rolled number on top (a d4 with it on the top corner, like a real one), glow when picked and get chained like the d6s. Opposite faces add up to one more than the number of sides, as on real dice.
+
 ## 2026-11-07: Honest runs no longer marked as cheated
 
 - Fixed: a run was marked as cheated as soon as a die got a Mirror, Ice, Bomb or Arrow face, or held a d4, d8, d12 or d20. That hit the Tabletop, Critical and Kaleidoscope sets and the Dungeon Crawl challenge from the start. The anti-cheat check now knows the new faces and shapes.
