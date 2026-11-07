@@ -2,6 +2,17 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-07: Balance fixes
+
+- **Bloodstone Set**: blood sacrifice now works three times a run at most. With Cloning Vat or enough Dice Packs it could save you forever.
+- **Glass Set**: glass breaks only 1 in 16 each time a die scores, all run (1 in 8 everywhere else).
+- **Beat the House is much harder**: end up $500 ahead on bets and gaming tables in a single run, counting everything you staked.
+  - Before, it counted only wins, across all your runs, so losses never set you back.
+- **Charmed Set**: the gaming tables no longer pay it 10% more (with that bonus every table paid out more than it took in, so a run could farm money forever). Instead, the Prize Wheel never takes a relic in Charmed runs.
+- **The Reaper**: its multiplier now stops at ×2 (×3 upgraded). It used to grow forever and was by far the strongest relic.
+- **Abacus**: +1 mult for each different number on the table (was +2). It was too strong for a Common.
+- **Iron Nerve** no longer counts with the Steel Set, which starts with no rerolls.
+
 ## 2026-11-07: Glass, Bloodstone and Marble
 
 - **Glass Set**: glass breaks again (1 in 8 each time a die scores), and you no longer start with Glass Cutter.
