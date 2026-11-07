@@ -2,6 +2,11 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-07: Honest runs no longer marked as cheated
+
+- Fixed: a run was marked as cheated as soon as a die got a Mirror, Ice, Bomb or Arrow face, or held a d4, d8, d12 or d20. That hit the Tabletop, Critical and Kaleidoscope sets and the Dungeon Crawl challenge from the start. The anti-cheat check now knows the new faces and shapes.
+- A run that was wrongly marked loses the mark when you continue it (unless you opened the Cheats menu in it).
+
 ## 2026-11-07: Polyhedral dice and the Whale
 
 - **Polyhedral dice**: d4, d8, d12 and d20 dice, in two new dice sets.
