@@ -6,11 +6,11 @@
       "predeploy": "node tools/site.js",
       "ignore": ["**/.*", "**/node_modules/**"],
       "headers": [
-        {"source": "/game.html", "headers": [{"key": "Cache-Control", "value": "no-cache"}, {"key": "Access-Control-Allow-Origin", "value": "*"}]},
-        {"source": "/version.json", "headers": [{"key": "Cache-Control", "value": "no-cache"}, {"key": "Access-Control-Allow-Origin", "value": "*"}]},
-        {"source": "/index.html", "headers": [{"key": "Cache-Control", "value": "no-cache"}]},
-        {"source": "/codex.html", "headers": [{"key": "Cache-Control", "value": "no-cache"}]},
-        {"source": "/", "headers": [{"key": "Cache-Control", "value": "no-cache"}]}
+        {"source": "/game.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}, {"key": "Access-Control-Allow-Origin","value": "*"}]},
+        {"source": "/version.json", "headers":  [{"key": "Cache-Control","value": "no-cache"}, {"key": "Access-Control-Allow-Origin","value": "*"}]},
+        {"source": "/index.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}]},
+        {"source": "/codex.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}]},
+        {"source": "/", "headers":  [{"key": "Cache-Control","value": "no-cache"}]}
       ]
     },
     {
@@ -28,9 +28,12 @@
       "public": "site",
       "predeploy": "node tools/site.js",
       "ignore": ["**/.*", "**/node_modules/**"],
-      "redirects": [
-        {"source": "/", "destination": "https://diceden.web.app/", "type": 302},
-        {"source": "/:path*", "destination": "https://diceden.web.app/:path*", "type": 302}
+      "headers": [
+        {"source": "/game.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}, {"key": "Access-Control-Allow-Origin","value": "*"}]},
+        {"source": "/version.json", "headers":  [{"key": "Cache-Control","value": "no-cache"}, {"key": "Access-Control-Allow-Origin","value": "*"}]},
+        {"source": "/index.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}]},
+        {"source": "/codex.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}]},
+        {"source": "/", "headers":  [{"key": "Cache-Control","value": "no-cache"}]}
       ]
     },
     {
@@ -38,9 +41,12 @@
       "public": "site",
       "predeploy": "node tools/site.js",
       "ignore": ["**/.*", "**/node_modules/**"],
-      "redirects": [
-        {"source": "/", "destination": "https://diceden.web.app/", "type": 302},
-        {"source": "/:path*", "destination": "https://diceden.web.app/:path*", "type": 302}
+      "headers": [
+        {"source": "/game.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}, {"key": "Access-Control-Allow-Origin","value": "*"}]},
+        {"source": "/version.json", "headers":  [{"key": "Cache-Control","value": "no-cache"}, {"key": "Access-Control-Allow-Origin","value": "*"}]},
+        {"source": "/index.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}]},
+        {"source": "/codex.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}]},
+        {"source": "/", "headers":  [{"key": "Cache-Control","value": "no-cache"}]}
       ]
     },
     {
@@ -48,9 +54,12 @@
       "public": "site",
       "predeploy": "node tools/site.js",
       "ignore": ["**/.*", "**/node_modules/**"],
-      "redirects": [
-        {"source": "/", "destination": "https://diceden.web.app/", "type": 302},
-        {"source": "/:path*", "destination": "https://diceden.web.app/:path*", "type": 302}
+      "headers": [
+        {"source": "/game.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}, {"key": "Access-Control-Allow-Origin","value": "*"}]},
+        {"source": "/version.json", "headers":  [{"key": "Cache-Control","value": "no-cache"}, {"key": "Access-Control-Allow-Origin","value": "*"}]},
+        {"source": "/index.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}]},
+        {"source": "/codex.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}]},
+        {"source": "/", "headers":  [{"key": "Cache-Control","value": "no-cache"}]}
       ]
     },
     {
@@ -58,9 +67,12 @@
       "public": "site",
       "predeploy": "node tools/site.js",
       "ignore": ["**/.*", "**/node_modules/**"],
-      "redirects": [
-        {"source": "/", "destination": "https://diceden.web.app/", "type": 302},
-        {"source": "/:path*", "destination": "https://diceden.web.app/:path*", "type": 302}
+      "headers": [
+        {"source": "/game.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}, {"key": "Access-Control-Allow-Origin","value": "*"}]},
+        {"source": "/version.json", "headers":  [{"key": "Cache-Control","value": "no-cache"}, {"key": "Access-Control-Allow-Origin","value": "*"}]},
+        {"source": "/index.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}]},
+        {"source": "/codex.html", "headers":  [{"key": "Cache-Control","value": "no-cache"}]},
+        {"source": "/", "headers":  [{"key": "Cache-Control","value": "no-cache"}]}
       ]
     }
   ]
