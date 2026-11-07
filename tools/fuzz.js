@@ -32,7 +32,7 @@ function FUZZ(){
  function bad(kind,msg,err){const key=kind+': '+msg;if(RUN.seen[key])return;RUN.seen[key]=1;RUN.viol.push({kind,msg,round:G&&G.round,phase:G&&G.phase,act:RUN.cur,step:RUN.step,trail:RUN.trail.slice(-60),stack:err&&err.stack?String(err.stack).split('\n').slice(0,8).join('\n'):''})}
 
  // ----- invariants -----
- const KNOWN_FACE='nmgxsh';
+ const KNOWN_FACE='nmgxshriba';
  function walk(o,p,out,depth){if(depth>12||out.length>3)return;if(o===null)return;const t=typeof o;
   if(t=='function'){out.push(p+' is a function');return}if(t=='number'){if(!isFinite(o))out.push(p+' = '+o);return}if(t!='object')return;
   if(Array.isArray(o)){o.forEach((x,i)=>{if(x===undefined)out.push(p+'['+i+'] undefined');else walk(x,p+'['+i+']',out,depth+1)});return}
@@ -74,7 +74,7 @@ function FUZZ(){
    if(!(d.f>=0&&d.f<=5&&d.f==Math.floor(d.f)))v('dice','bad face index '+d.f);if(d.en&&!EN[d.en])v('dice','unknown charm '+d.en);if(d.lf!=null&&(!Array.isArray(d.lf)||d.lf.length!=6||d.lf.some(x=>!Number.isInteger(x))||[0,1,2].some(k=>d.lf[k]+d.lf[5-k]!=0)))v('living','bad drift '+JSON.stringify(d.lf));if(d.seal&&!SEALS[d.seal])v('dice','unknown seal '+d.seal)});
   const fam={};D.forEach(d=>{if(d.fam){const k=fam[d.fam];if(k&&k.join()!=d.faces.join())v('clones','a clone family has different faces');fam[d.fam]=d.faces;const q=fam['lf'+d.fam];if(q!==undefined&&q!==JSON.stringify(d.lf||null))v('clones','a Living clone family has different drift');fam['lf'+d.fam]=JSON.stringify(d.lf||null)}});
   if(D.some(d=>d.keep)&&!rel.includes('shackle'))v('shackle','a die stays shackled without Iron Shackle');
-  if(!bossIs('rust')&&!(G.st&&G.st.rustRound==G.round)&&D.filter(d=>d.stuck&&!d.keep).length>G.cfg.stuckCap)v('chain','more chained dice than stuckCap');
+  if(!bossIs('rust')&&!(G.st&&G.st.rustRound==G.round)&&D.filter(d=>d.stuck&&!d.keep&&!d.ice).length>G.cfg.stuckCap)v('chain','more chained dice than stuckCap');
   // arcana, tags
   (G.fort||[]).forEach(f=>{if(!FT(f))v('arcana','unknown Arcana '+f)});if(rel.includes('forger'))RUN.forged=1;if(G.fort.length>G.fcap&&!RUN.forged)v('arcana-cap','more Arcana cards than slots ('+G.fort.length+'/'+G.fcap+')');
   (G.tags||[]).forEach(t=>{if(!TG(t))v('tags','unknown tag '+t)});
@@ -94,7 +94,7 @@ function FUZZ(){
   return js}
 
  // the save/resume round trip: what render() saves, loaded back the way the game loads it. Differences outside the transient panel fields are findings
- const TRANS=['tbl','whR','acct','whPick','case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce','dm','cwR','pastR'];
+ const TRANS=['tbl','whR','acct','whPick','case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce','dm','cwR','pastR','chalP','fixO'];
  function roundTrip(){const pend=G.case,sv=JSON.parse(JSON.stringify({G:{...G,lb:null},offers})),want=JSON.parse(JSON.stringify(sv.G));resume(sv);flush();
   if(pend){if(pend!='dud'&&RL[pend]&&!G.relics.includes(pend)&&!(G.cw&&G.cw.id==pend))bad('resume','a case won mid-spin was lost on reload');return}
   const got=JSON.parse(JSON.stringify(G));const keys=new Set([...Object.keys(want),...Object.keys(got)]);
@@ -122,6 +122,7 @@ function FUZZ(){
   while(G.fu&&g++<6){const u=G.fu,f=FT(G.fort[u.i]);if(!f){G.fu=null;break}
    if(u.step==0){G.fu=null;break}// Use refused (canF false): close
    if(id=='hammer'){tap(ri(G.dice.length));continue}
+   if(id=='alch'){alchGo(pick(['g','m']));if(G.fu)G.fu=null;continue}
    if(f.t=='relic'){if(!G.relics.length){G.fu=null;break}pickFR(pick(f.setOnly&&G.relics.some(inSet)&&chance(.8)?G.relics.filter(inSet):G.relics));if(G.fu&&chance(.5))G.fu=null;continue}
    if(id=='engraver'&&u.face!=null){engrave(fakeEv());continue}
    if((id=='engraver'||id=='carver')&&u.die!=null){pickF(u.die,ri(6));continue}
@@ -163,11 +164,15 @@ function FUZZ(){
   }else if(P=='shop'){
    if(G.cw)for(const k of ['keep','sell','re','re','no'])L.push([6,'cw-'+k,()=>{cwDo(k);return k+' '+(G.cw?G.cw.id:'')}]);
    L.push([5,'leave',()=>{nextRound();return ''}]);
-   L.push([G.bj&&G.bj.st=='play'?0:1.5,'spin',()=>{const s=pick([1,5,10,25,'all']);spin(s);return 'spin '+s+(G.tbl&&G.tbl.R?' '+G.tbl.R.join(''):'')}]);
-   L.push([G.bj&&G.bj.st=='play'?0:1.5,'bjDeal',()=>{const s=pick([1,5,10,'all']);bjDeal(s);return 'deal '+s}]);
+   L.push([tHand()?0:1.5,'hlDeal',()=>{const s=pick([1,5,10,'all']);hlDeal(s);return 'hilo '+s}]);
+   if(G.hl&&G.hl.st=='play')for(const k of ['hi','lo','cash'])L.push([4,'hl-'+k,()=>{if(k=='cash')hlCash();else hlGuess(k);return k+' '+(G.hl?G.hl.L.join(','):'')}]);
+   L.push([tHand()?0:1.5,'crDeal',()=>{const s=pick([1,5,10,'all']);crDeal(s);return 'craps '+s}]);
+   if(G.cr&&G.cr.st=='play')L.push([5,'cr-roll',()=>{crRoll();return 'roll '+(G.cr?G.cr.R.map(p=>p[0]+p[1]).join(','):'')}]);
+   L.push([tHand()?0:1.5,'spin',()=>{const s=pick([1,5,10,25,'all']);spin(s);return 'spin '+s+(G.tbl&&G.tbl.R?' '+G.tbl.R.join(''):'')}]);
+   L.push([tHand()?0:1.5,'bjDeal',()=>{const s=pick([1,5,10,'all']);bjDeal(s);return 'deal '+s}]);
    if(G.bj&&G.bj.st=='play')for(const [k,f] of [['hit',bjHit],['stand',bjStand],['double',bjDouble]])L.push([4,'bj-'+k,()=>{f();return k+' '+(G.bj?G.bj.p.join('+')+' vs '+G.bj.d.join('+'):'')}]);
-   L.push([whLeft()>0&&G.relics.length&&!(G.bj&&G.bj.st=='play')?1.5:0,'wheel',()=>{G.tbl={k:'wheel'};G.whR=pick(G.relics);render();whSpin();return 'wheel '+(G.tbl&&G.tbl.S?G.tbl.S[G.tbl.i].k:'')}]);
-   L.push([G.tbl&&!(G.bj&&G.bj.st=='play')?2:0,'tblLeave',()=>{tblLeave();return ''}]);
+   L.push([whLeft()>0&&G.relics.length&&!tHand()?1.5:0,'wheel',()=>{G.tbl={k:'wheel'};G.whR=pick(G.relics);render();whSpin();return 'wheel '+(G.tbl&&G.tbl.S?G.tbl.S[G.tbl.i].k:'')}]);
+   L.push([G.tbl&&!tHand()?2:0,'tblLeave',()=>{tblLeave();return ''}]);
    L.push([offers.length?9:0,'buy',()=>{const ok=offers.map((o,i)=>[o,i]).filter(([o])=>G.money>=o.c);if(!ok.length)return 'broke';const [o,i]=pick(ok);if(o.id=='gam'&&chance(.25)){__hold.case=1;try{buy(i)}finally{__hold.case=0}if(G.case){RUN.cur='resume-case';roundTrip();return 'buy gam + reload mid-spin'}}else buy(i);
      if(G.dp!=null){if(chance(.1)){G.dp=null;render();return 'cancel '+o.id}dpPick(ri(G.dice.length))}return 'buy '+o.id}]);
    L.push([offers.length?2:0,'hold',()=>{const ok=offers.map((o,i)=>[o,i]).filter(([o])=>holdOk(o));if(!ok.length)return 'none';const [o,i]=pick(ok);holdO(i);return 'hold '+o.id}]);
@@ -180,7 +185,7 @@ function FUZZ(){
    else if(K)L.push([6,'packPick',()=>{if(!K.items.length){closePack(1);return 'empty'}const i=ri(K.items.length);pickPack(i);return 'pick '+i}]);
    L.push([1.5,'packSkip',()=>{closePack(1);return ''}]);
   }else if(P=='alley'){
-   L.push([4,'deal',()=>{if(!G.alley||!G.alley.length){leaveAlley();return 'none'}const id=pick(G.alley);takeDeal(id);if(G.phase=='alley')leaveAlley();return id}]);
+   L.push([4,'deal',()=>{if(!G.alley||!G.alley.length){leaveAlley();return 'none'}const id=pick(G.alley);takeDeal(id);if(G.fixO&&chance(.7))fixPick(pick(G.fixO));if(G.phase=='alley')leaveAlley();return id}]);
    L.push([2,'walk',()=>{leaveAlley();return ''}]);
   }
   return L}
@@ -209,7 +214,7 @@ function FUZZ(){
   // dice: extra dice, charms, seals, faces, loaded, clone families
   for(let j=ri(chance(.3)?8:3);j>0&&G.dice.length<MAXDICE;j--)G.dice.push(chance(.5)?newDie():mkDie(1+ri(6)));
   const ENK=Object.keys(EN),SK=Object.keys(SEALS);
-  G.dice.forEach(d=>{if(chance(.2))d.en=pick(ENK);if(chance(.15))d.seal=pick(SK);d.faces=d.faces.map(t=>chance(.1)?pick([...'mgsh']):t);if(chance(.1))d.loaded=true});
+  G.dice.forEach(d=>{if(chance(.2))d.en=pick(ENK);if(chance(.15))d.seal=pick(SK);d.faces=d.faces.map(t=>chance(.1)?pick([...'mgshriba']):t);if(chance(.1))d.loaded=true});
   // Living dice: about one die in twelve, most of them already drifted (faces past 6 and below 0, pairs summing to 7)
   G.dice.forEach(d=>{if(chance(.06))d.en='living';if(d.en=='living'&&chance(.7)){const L=[0,0,0,0,0,0];for(let k=0;k<3;k++){const x=ri(25)-12;L[k]=x;L[5-k]=-x}d.lf=L}});
   const nf=chance(.4)?1+ri(2):0;for(let j=0;j<nf;j++){const src=pick(G.dice);famOf(src);const k=1+ri(12);for(let c=0;c<k&&G.dice.length<MAXDICE;c++){const cl=JSON.parse(JSON.stringify(src));Object.assign(cl,{thr:false,sel:false,stuck:0,keep:false,rs:false,pre:false,px:null,py:null,so:0});G.dice.push(cl)}}

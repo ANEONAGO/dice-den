@@ -2,6 +2,55 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-07: Curses, challenges, two new tables and a pile of new content
+
+- **12 new relics**:
+  - Tuning Fork: dice all within 1 of each other give ×1.5.
+  - Wraparound: ladders wrap from 6 to 1.
+  - Metronome: alternates +mult and +chips each throw.
+  - Matryoshka: each clone in a family scores more mult than the last.
+  - Domino Effect: each die adds the previous die's number as chips.
+  - Spare Change: grows on every 1 you score.
+  - Main Event: pick a hand each round for ×2.
+  - Instant Replay: your last throw adds your best throw's chips.
+  - Lucky Coin: heads gives +12 mult.
+  - Abacus: +mult for every different number on the table.
+  - Powder Keg: a growing multiplier that may blow up each round; sell it before it does.
+  - Hot Potato: one die on the table holds the potato. Score it for ×1.5, or leave it and lose $2.
+- **4 new faces**:
+  - Mirror: copies the most common number on the table.
+  - Ice: stays frozen on the table after it scores.
+  - Bomb: +50 chips, cracks after 3 scores.
+  - Arrow: the next die scores again.
+- **6 new charms**:
+  - Void: no chips, ×1.4 mult.
+  - Clockwork: winds up +2 mult for every throw in a row it scores.
+  - Anchor: rerolled dice drift to its number.
+  - Spring: bounces off a 1 or 2.
+  - Fate: ×2 or ×0.5.
+  - Chameleon: copies the charm of the die before it.
+- **3 new seals**:
+  - Copper: +2 chips for good every reroll.
+  - Black: scores twice more in the last throw.
+  - Green: +$1 when chained.
+- **7 new bosses**: The Copycat, The Heckler, The Repo Man, The Stopwatch, Frostbite, The Snob and The Sphinx.
+- **5 new dice sets**: Marble, Twin, Pearl, Kaleidoscope and Watchmaker, each with its own unlock.
+- **3 new relic sets**: Rhythm Section, Demolition Crew (the Powder Keg never blows) and Nesting Dolls.
+- **2 new secret hands**: Twenty-One (six dice totalling 21) and Staircase (three pairs in a row).
+- **4 new Arcana**:
+  - The Alchemist: Gold faces into Mult, or the other way.
+  - The Wager: double up or lose half.
+  - The Stopclock: one more throw.
+  - The Tower: unchain and reroll your chained dice for free.
+- **3 new house rules**: Second Chance, Loyalty Card and Pip Insurance.
+- **4 new Back Alley deals**: a dare (clear the next round in one throw), a swap (a relic for one a rarity higher), a fix (choose your next boss) and a pact.
+- **Curses**: from round 3 some relic cards come Cursed. They cost half, but carry a curse while you hold them and sell for nothing. The Back Alley's pact gives a free cursed Rare.
+- **Gaming tables**: two new tables, High-Low and Craps. Each shop now opens two of the four cash tables; the Prize Wheel stays.
+- **Challenges**: eight fixed-twist runs on the main menu. Clear round 15 to complete one.
+- **Modifiers**: five optional twists on the dice screen. A modified run stays off the online boards.
+- **Relic collection**: the Collection now remembers every relic you have held across your runs, and Records counts them.
+- 7 new achievements: Hexed, Kaboom, Daredevil, Challenger, Curator, Archivist and Museum Piece.
+
 ## 2026-11-07: Weekly challenge removed
 
 - The Weekly challenge is gone: no Weekly tile, no "This week" line on the main menu and no Weekly tab on the high scores. The daily challenge, the daily streak and Past runs stay.
