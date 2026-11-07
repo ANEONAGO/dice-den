@@ -2,6 +2,15 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-07: Glass, Bloodstone and Marble
+
+- **Glass Set**: glass breaks again (1 in 8 each time a die scores), and you no longer start with Glass Cutter.
+  - With unbreakable glass it was by far the strongest set.
+  - Finding Glass Cutter in a run now makes it unbreakable.
+- **Bloodstone Set reworked**: fall short of a target and your weakest die is sacrificed instead, and the run goes on, as long as you have more than 5 dice. Every die you add is another life.
+  - The old blood debt cost money that was better spent in the shop.
+- **Marble Set** keeps its power but is harder to unlock: win a run while owning 12 or more special faces.
+
 ## 2026-11-07: Sets that change the rules, very hard achievements, achievement pop-ups
 
 - **Achievements are easier to see.**
