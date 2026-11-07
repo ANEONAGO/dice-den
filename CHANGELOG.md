@@ -2,6 +2,12 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-07: Weekly challenge removed
+
+- The Weekly challenge is gone: no Weekly tile, no "This week" line on the main menu and no Weekly tab on the high scores. The daily challenge, the daily streak and Past runs stay.
+- The Weekend Warrior achievement went with it.
+- Past runs: a weekly run in the list now replays as a plain seeded run on the same seed.
+
 ## 2026-11-07: More places to play
 
 - Dice Den now plays at six addresses, all the same game and the same build:

@@ -45,12 +45,6 @@ service cloud.firestore {
       allow create, update: if day.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$') && okWrite();
       allow delete: if false;
     }
-    // weekly boards (2026-11-07): weeks/2026-W45/scores/{player}, ISO week in UTC
-    match /weeks/{week}/scores/{player} {
-      allow read: if true;
-      allow create, update: if week.matches('^[0-9]{4}-W[0-9]{2}$') && okWrite();
-      allow delete: if false;
-    }
     // cloud saves (Accounts): saves/{uid}, readable and writable only by the signed-in owner (Firebase Authentication, email and password).
     // data is every dd_* key of the player's browser as one JSON string; t is when it was saved, v the build
     match /saves/{uid} {
