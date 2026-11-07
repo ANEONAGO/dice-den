@@ -22,6 +22,46 @@
         {"source": "/", "destination": "https://diceden.web.app/", "type": 302},
         {"source": "/:path*", "destination": "https://diceden.web.app/:path*", "type": 302}
       ]
+    },
+    {
+      "site": "algebraarchive",
+      "public": "site",
+      "predeploy": "node tools/site.js",
+      "ignore": ["**/.*", "**/node_modules/**"],
+      "redirects": [
+        {"source": "/", "destination": "https://diceden.web.app/", "type": 302},
+        {"source": "/:path*", "destination": "https://diceden.web.app/:path*", "type": 302}
+      ]
+    },
+    {
+      "site": "chancetheory",
+      "public": "site",
+      "predeploy": "node tools/site.js",
+      "ignore": ["**/.*", "**/node_modules/**"],
+      "redirects": [
+        {"source": "/", "destination": "https://diceden.web.app/", "type": 302},
+        {"source": "/:path*", "destination": "https://diceden.web.app/:path*", "type": 302}
+      ]
+    },
+    {
+      "site": "theoddsindex",
+      "public": "site",
+      "predeploy": "node tools/site.js",
+      "ignore": ["**/.*", "**/node_modules/**"],
+      "redirects": [
+        {"source": "/", "destination": "https://diceden.web.app/", "type": 302},
+        {"source": "/:path*", "destination": "https://diceden.web.app/:path*", "type": 302}
+      ]
+    },
+    {
+      "site": "samplespace",
+      "public": "site",
+      "predeploy": "node tools/site.js",
+      "ignore": ["**/.*", "**/node_modules/**"],
+      "redirects": [
+        {"source": "/", "destination": "https://diceden.web.app/", "type": 302},
+        {"source": "/:path*", "destination": "https://diceden.web.app/:path*", "type": 302}
+      ]
     }
   ]
 }
