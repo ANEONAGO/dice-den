@@ -2,6 +2,34 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-07: New dice screen, shape sets, reward sets
+
+- **A cleaner dice screen.** Every set is a tile, with tabs for Classic, Shapes, Hard and Rewards. Pick one to see what it does and how to unlock it.
+  - Difficulty, stake and modifiers sit beside it, each saying what a win there unlocks. Then press **Start run**.
+  - Modifiers are folded away until you open them. The game remembers the last set you played.
+- **Shape sets are back, done properly.** Every die in the run is the same shape, and only the dice set decides it. Every die you gain in that run (Dice Packs, the shop and the rest) comes in that shape too.
+  - **Caltrop Set**: d4s, with +2 mult each. Unlocks at round 8.
+  - **Prism Set**: d8s. Unlocks at round 12.
+  - **Percentile Set**: d10s, a new shape. Unlocks at round 16.
+  - **Zodiac Set**: d12s. Unlocks by winning a run.
+  - **Critical Set**: d20s; a natural 20 doubles the mult and a natural 1 halves it. Unlocks at round 20 with a shape set.
+  - Hands use the real numbers; nothing counts as a 6 any more.
+  - The dice take their set's colours in 2D and 3D, so they match the rest of the den.
+  - Each set's targets are adjusted so it plays fairly. Each one says by how much.
+- **Stakes, difficulties and modifiers now earn things.**
+  - **Clover Set**: every die has a Green Seal. Win on the Green stake.
+  - **Onyx Set**: three Black Seals. Win on the Black stake.
+  - **Sapphire Set**: three Blue Seals. Win on the Blue stake.
+  - **Bullion Set**: two Gold Seals. Win on the Gold stake.
+  - **Steel Set**: three Steel dice. Win on Hard or Brutal.
+  - **Diamond Set**: an upgraded Epic relic and an extra slot. Win on Brutal.
+  - **Carnival Set**: five dice with random charms. Win with two or more modifiers.
+  - Ruby (Red stake) and Bloodstone (Hard) already worked this way.
+- **11 new achievements**: one for winning on each stake that had none, Brutal, each modifier, two modifiers at once (Twisted) and a shape set (Shape Shifter).
+- **Twin Set reworked**: two pairs of twins that always land on the same face, so every throw holds two pairs.
+- **Marble Set reworked**: every die you score gains +1 chip for good, up to +5 per die.
+- **Watchmaker Set and the Clockwork Charm toned down**: Clockwork is now +1 mult per throw in a row, up to +5 (it had no cap), and the set starts with two Clockwork dice instead of three.
+
 ## 2026-11-07: Ghost duels; polyhedral dice taken out
 
 - **Ghost duels**: challenge a friend to beat one of your runs.

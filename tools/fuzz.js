@@ -70,8 +70,8 @@ function FUZZ(){
   // dice
   const D=G.dice;if(D.length<5||D.length>MAXDICE)v('dice','dice count '+D.length);
   if(new Set(D).size!=D.length)v('dice','one die object sits twice in G.dice');
-  D.forEach(d=>{if(!Array.isArray(d.faces)||d.faces.length!=6||d.sides||d.faces.some(t=>!KNOWN_FACE.includes(t)||t.length!=1))v('dice','bad faces '+JSON.stringify(d.faces));
-   if(!(d.f>=0&&d.f<=5&&d.f==Math.floor(d.f)))v('dice','bad face index '+d.f);if(d.en&&!EN[d.en])v('dice','unknown charm '+d.en);if(d.lf!=null&&(!Array.isArray(d.lf)||d.lf.length!=6||d.lf.some(x=>!Number.isInteger(x))||[0,1,2].some(k=>d.lf[k]+d.lf[5-k]!=0)))v('living','bad drift '+JSON.stringify(d.lf));if(d.seal&&!SEALS[d.seal])v('dice','unknown seal '+d.seal)});
+  D.forEach(d=>{if(!Array.isArray(d.faces)||d.faces.length!=(d.sides||6)||(d.sides||0)!=setShape()||d.sides&&d.faces.some(t=>t!='n')||d.faces.some(t=>!KNOWN_FACE.includes(t)||t.length!=1))v('dice','bad faces '+JSON.stringify(d.faces));
+   if(!(d.f>=0&&d.f<(d.sides||6)&&d.f==Math.floor(d.f)))v('dice','bad face index '+d.f);if(d.en&&!EN[d.en])v('dice','unknown charm '+d.en);if(d.lf!=null&&(!Array.isArray(d.lf)||d.lf.length!=6||d.lf.some(x=>!Number.isInteger(x))||[0,1,2].some(k=>d.lf[k]+d.lf[5-k]!=0)))v('living','bad drift '+JSON.stringify(d.lf));if(d.seal&&!SEALS[d.seal])v('dice','unknown seal '+d.seal)});
   const fam={};D.forEach(d=>{if(d.fam){const k=fam[d.fam];if(k&&k.join()!=d.faces.join())v('clones','a clone family has different faces');fam[d.fam]=d.faces;const q=fam['lf'+d.fam];if(q!==undefined&&q!==JSON.stringify(d.lf||null))v('clones','a Living clone family has different drift');fam['lf'+d.fam]=JSON.stringify(d.lf||null)}});
   if(D.some(d=>d.keep)&&!rel.includes('shackle'))v('shackle','a die stays shackled without Iron Shackle');
   if(!bossIs('rust')&&!(G.st&&G.st.rustRound==G.round)&&D.filter(d=>d.stuck&&!d.keep&&!d.ice).length>G.cfg.stuckCap)v('chain','more chained dice than stuckCap');
@@ -215,7 +215,7 @@ function FUZZ(){
   // dice: extra dice, charms, seals, faces, loaded, clone families
   for(let j=ri(chance(.3)?8:3);j>0&&G.dice.length<MAXDICE;j--)G.dice.push(chance(.5)?newDie():mkDie(1+ri(6)));
   const ENK=Object.keys(EN),SK=Object.keys(SEALS);
-  G.dice.forEach(d=>{if(chance(.2))d.en=pick(ENK);if(chance(.15))d.seal=pick(SK);d.faces=d.faces.map(t=>chance(.1)?pick([...'mgshriba']):t);if(chance(.1))d.loaded=true});
+  G.dice.forEach(d=>{if(chance(.2))d.en=pick(ENK);if(chance(.15))d.seal=pick(SK);if(!d.sides)d.faces=d.faces.map(t=>chance(.1)?pick([...'mgshriba']):t);if(chance(.1))d.loaded=true});
   // Living dice: about one die in twelve, most of them already drifted (faces past 6 and below 0, pairs summing to 7)
   G.dice.forEach(d=>{if(chance(.06))d.en='living';if(d.en=='living'&&chance(.7)){const L=[0,0,0,0,0,0];for(let k=0;k<3;k++){const x=ri(25)-12;L[k]=x;L[5-k]=-x}d.lf=L}});
   const nf=chance(.4)?1+ri(2):0;for(let j=0;j<nf;j++){const src=pick(G.dice);famOf(src);const k=1+ri(12);for(let c=0;c<k&&G.dice.length<MAXDICE;c++){const cl=JSON.parse(JSON.stringify(src));Object.assign(cl,{thr:false,sel:false,stuck:0,keep:false,rs:false,pre:false,px:null,py:null,so:0});G.dice.push(cl)}}
@@ -225,6 +225,7 @@ function FUZZ(){
   if(chance(.2))G.gamT=RIGN+ri(chance(.5)?3:60);
   // a late start: jump to round R through the shop, so the endless rounds and later bosses get played too
   if(chance(.3)){const r=chance(.5)?2+ri(30):25+ri(60);G.round=r-1;G.phase='shop';makeOffers();nextRound();rec.start=G.round}
+  G.dice.forEach(d=>shp(d));// a shape set makes every die its shape, as the game does for every die it adds
   G.mq=[];render();flush();rec.relics=G.relics.length;rec.merged=(G.merged||[]).map(m=>m.n);rec.dice=G.dice.length;rec.fam=nf;return rec}
 
  function playRun(seed,maxAct){
