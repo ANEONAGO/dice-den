@@ -2,6 +2,20 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-07: Ghost duels; polyhedral dice taken out
+
+- **Ghost duels**: challenge a friend to beat one of your runs.
+  - When a run ends, **Challenge a friend** on the run summary copies a duel link. Every run in **Past runs** has a **Duel** button too.
+  - Your friend opens the link and finds the invite on the main menu. They play the same seed, dice set, difficulty, stake and modifiers (a daily gets that day's set, relic and house rule).
+  - While they play, a line above the score bar shows your ghost's score for that round, and a marker on the bar shows where it got to.
+  - Whoever reaches the further round wins; on the same round, more points wins. The summary names the winner, offers a **Rematch**, and lets them send their run back to you.
+  - The link opens on the same web address you played on. It names the game version you played; if your friend has a different version, the invite says the same seed may play out differently.
+  - Nothing is uploaded: the run travels inside the link. Duel runs stay off the boards and records. Challenge runs, the tutorial and cheated runs cannot be sent.
+- **Polyhedral dice are gone**: the d4, d8, d12 and d20 dice did not fit the game, so they are out again, along with the Tabletop and Critical sets and the Dungeon Crawl challenge.
+  - A saved run with them carries on with ordinary d6s, as a Classic Set run.
+  - A Dungeon Crawl run in progress is removed.
+- Fixed: the Codex page came up empty since earlier today.
+
 ## 2026-11-07: 3D polyhedral dice
 
 - With 3D dice on, the d4, d8, d12 and d20 are now real 3D dice: a tetrahedron, an octahedron, a dodecahedron and an icosahedron with numbered faces. They tumble, land with the rolled number on top (a d4 with it on the top corner, like a real one), glow when picked and get chained like the d6s. Opposite faces add up to one more than the number of sides, as on real dice.
