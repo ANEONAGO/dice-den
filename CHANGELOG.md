@@ -1,6 +1,30 @@
 # Dice Den patch notes
 
-Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/ or https://diceden.web.app.
+Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
+
+## 2026-11-07: More places to play
+
+- Dice Den now plays at six addresses, all the same game and the same build:
+  - https://aneonago.github.io/dice-den/
+  - https://diceden.web.app
+  - https://algebraarchive.web.app
+  - https://chancetheory.web.app
+  - https://theoddsindex.web.app
+  - https://samplespace.web.app
+- Each also works on .firebaseapp.com (for example https://chancetheory.firebaseapp.com), and the old https://dice-den-aab4d.web.app forwards to diceden.web.app.
+- Progress saved without an account stays on the address you played it on. Sign up and the same progress follows you to every address and device.
+
+## 2026-11-07: Final boss, weekly challenge, shop preview and more
+
+- **The House**, a final boss at round 30: it deals two other boss rules at once. Beat it to win the run.
+- **Shop preview**: every relic on the shelf shows what your last scored throw would have made with it ("Last throw 88 → 264, +200%"), counting any set bonus it completes.
+- **Weekly challenge**: a new Weekly tile. One seed a week with its own dice set, starting relic and house rule, plus a twist (Boss Week, Closed Shelves, Big Table or Tight Budget). Your first weekly run of the week goes on the new Weekly board (High scores).
+- **Daily streak**: play the daily on consecutive days to build a streak, shown under the menu tiles. New achievements Regular (7 days) and Part of the Furniture (30 days), plus Weekend Warrior (clear round 10 in a weekly).
+- **Past runs**: a new tile with your last 20 finished runs and their seeds. Replay plays one again as a seeded run; a daily or weekly gets its set, relic, house rule and twist back. The list is also under Records.
+- **Relaxed** (easy) gets a **Best pick** button that picks the best-scoring dice for you. Relaxed runs no longer unlock dice sets or stakes.
+- **Thirteen**: a plain 13 now pays 7 to 5 and a doubled hand that lands on 13 pays 2 to 1. Double used to never be the right move; now it is in about a fifth of deals. The house edge is about 1.1%.
+- Fix: when a set card with a center ring lost Mimic or Reflection but kept another set (the Prize Wheel can take one), the ring stayed. The ringed relic now goes back to your bar, and the message says so.
+- **Prize Wheel**: a relic is valued at half its shop price (a grown Gilded Egg no longer counts its growth), cash pays twice that and the big prize three times. The wheel paid out far more than it took.
 
 ## 2026-11-07: Hold an item for the next shop
 

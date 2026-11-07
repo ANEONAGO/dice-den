@@ -87,13 +87,14 @@ function FUZZ(){
   Object.entries(G.lv||{}).forEach(([k,n])=>{if(!(n>=0)||n!=Math.floor(n))v('levels','bad hand level '+k+'='+n)});
   if(G.phase=='idle'&&G.thrown&&!D.some(d=>d.thr))v('throw','thrown with no dice on the table');
   if(G.phase=='bet'&&G.round%5==0&&!G.boss)v('boss','boss round without a boss');
-  if(G.boss&&!BOSSES.some(b=>b.id==G.boss.id))v('boss','unknown boss');
+  // The House (round cfg.win) carries two different known boss rules in G.boss.r
+  if(G.boss&&(G.boss.id=='house'?!(Array.isArray(G.boss.r)&&G.boss.r.length==2&&G.boss.r[0]!=G.boss.r[1]&&G.boss.r.every(r=>BOSSES.some(b=>b.id==r))):!BOSSES.some(b=>b.id==G.boss.id)))v('boss','unknown boss');
   // the score preview matches itself and changes nothing (calc must be pure)
   if(G.phase=='idle'&&G.thrown&&T().length){const a=JSON.stringify({rst:G.rst,m:G.money,g:G.grow,lv:G.lv}),c1=calc(),c2=calc();if(c1.total!==c2.total)v('calc','calc() is not stable');if(!isFinite(c1.total)||!isFinite(c1.mult)||!isFinite(c1.sum))v('calc','calc() not finite: '+c1.total);if(JSON.stringify({rst:G.rst,m:G.money,g:G.grow,lv:G.lv})!=a)v('calc','calc() changed the state')}
   return js}
 
  // the save/resume round trip: what render() saves, loaded back the way the game loads it. Differences outside the transient panel fields are findings
- const TRANS=['tbl','whR','acct','whPick','case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce','dm','cwR'];
+ const TRANS=['tbl','whR','acct','whPick','case','mq','fu','cheatP','bm','menu','col','rp','bonusPop','dp','lb','cf','dd','reqBusy','alleyMsg','posting','notes','rigP','sc','mt','myd','ce','dm','cwR','pastR'];
  function roundTrip(){const pend=G.case,sv=JSON.parse(JSON.stringify({G:{...G,lb:null},offers})),want=JSON.parse(JSON.stringify(sv.G));resume(sv);flush();
   if(pend){if(pend!='dud'&&RL[pend]&&!G.relics.includes(pend)&&!(G.cw&&G.cw.id==pend))bad('resume','a case won mid-spin was lost on reload');return}
   const got=JSON.parse(JSON.stringify(G));const keys=new Set([...Object.keys(want),...Object.keys(got)]);
