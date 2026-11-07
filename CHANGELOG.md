@@ -2,6 +2,23 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-07: Polyhedral dice and the Whale
+
+- **Polyhedral dice**: d4, d8, d12 and d20 dice, in two new dice sets.
+  - Each die scores its number as chips, and a number above 6 can also count as a 6 in a hand.
+  - A d4 adds +2 mult when it scores.
+  - A d20 doubles the mult on a natural 20 and halves it on a natural 1.
+  - They take charms and seals, but not face paints.
+- **Tabletop Set**: a d4, three d6s, a d8, a d12 and a d20, with targets 20% higher. Dice Packs often bring other shapes. Unlocks at round 12.
+- **Critical Set**: seven d20s, with targets 2.75 times as high. Unlocks by winning with the Tabletop Set.
+- **Dungeon Crawl**: a new challenge, the Tabletop Set where every round is a boss round.
+- **The Whale**: from round 6, the betting screen sometimes offers to call the Whale, at most once between two bosses.
+  - You see its rule first: a boss rule for that round.
+  - Clear the round as usual, or score twice the target and the Whale pays $10 plus a Rare or better relic.
+  - Calling it gives up that round's tag.
+- New achievement: Whale Watcher.
+- Fixed: a Mirror face could copy a number above 6, which broke drawing that die.
+
 ## 2026-11-07: Curses, challenges, two new tables and a pile of new content
 
 - **12 new relics**:

@@ -34,6 +34,7 @@ const POLICY={
  facePref:'mhsgx',                // Face Pack paint preference, best first (m mult, h heart, s star, g gold, x glass)
  alleyP:Math.min(1,Math.max(0,+flag('alley',.5))),// chance to take a Back Alley deal (a random one of the three offered)
  bets:has('bets'),betStake:1,     // --bets: one $1 bet a round on the most likely option (off: no bets, makeBets is skipped)
+ whale:false,                     // call the Whale whenever the betting screen offers it (--policy '{"whale":true}')
  swapBoss:'always',               // Pit Boss's Favour: 'always', 'never' or a list of boss ids to swap away
  stake:Math.max(1,+flag('stake',1)||1),// --stake 1..6: the stake every run is played at
  maxRound:has('endless')?(+flag('max',100)||100):40,stopAtWin:!has('endless'),// stop once the win round is cleared, or at maxRound; --endless keeps playing (to --max, default 100)
@@ -161,6 +162,7 @@ function BOT(P){
  }
  const swapWanted=id=>P.swapBoss=='always'||Array.isArray(P.swapBoss)&&P.swapBoss.includes(id);
  function betPolicy(){
+  if(P.whale&&G.whaleO&&!G.boss&&typeof whaleGo=='function'){whaleGo();R.whales=(R.whales||0)+1}
   if(G.boss&&vh('cut')&&!G.bossSw&&swapWanted(G.boss.id)){const from=G.boss.id;swapBoss();R.swaps.push({round:G.round,from,to:G.boss.id})}
   if(G.boss)R.bosses.push({round:G.round,id:G.boss.id});log(()=>`round ${G.round}: target ${G.target}${G.boss?' BOSS '+G.boss.n:''}, $${Math.round(G.money)}, relics ${G.relics.join(',')||'-'}, ${G.dice.length} dice`);
   if(P.bets&&G.betOpts&&G.betOpts.length&&G.money>=P.betStake){const o=G.betOpts.slice().sort((a,b)=>b.p-a.p)[0];placeBet(G.betOpts.indexOf(o),P.betStake);R.bets++}
