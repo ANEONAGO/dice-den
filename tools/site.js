@@ -11,6 +11,9 @@ if(files.some(f=>!ok(f)))fail('unexpected file in the list: '+files.filter(f=>!o
 for(const s of ['game.html','index.html','codex.html','version.json'])if(!files.includes(s))fail(s+' is not in HEAD');
 fs.rmSync(out,{recursive:true,force:true});
 let total=0;for(const f of files){const p=path.join(out,f),b=git('show','HEAD:'+f);fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,b);total+=b.length}
+// Firebase serves the game at the site root (since 2026-11-07, user request): index.html is a copy of game.html there and
+// firebase.json redirects /game.html to /. GitHub Pages keeps the repo's index.html, which forwards to game.html.
+fs.copyFileSync(path.join(out,'game.html'),path.join(out,'index.html'));
 // the published script, hashed the way tools/build.js and the game's ih() do; the readable source has comment lines, the build has none
 const h=fs.readFileSync(path.join(out,'game.html'),'utf8'),m=h.match(/<script>([\s\S]*)<\/script><\/body>/),b=(h.match(/const BUILD='([^']*)'/)||[])[1];
 if(!m||!b)fail('game.html has no main script or BUILD');

@@ -8,6 +8,8 @@ A back-room dice roguelike in the browser. Roll seven dice, pick up to five that
 
 **Codex:** https://aneonago.github.io/dice-den/codex.html lists every relic, set, hand, card, boss and rule.
 
+**Patch notes:** [CHANGELOG.md](CHANGELOG.md) lists every change, newest first.
+
 ## Beta testing
 
 It is in open beta. The most useful feedback is:
