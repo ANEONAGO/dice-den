@@ -2,6 +2,10 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/ or https://diceden.web.app.
 
+## 2026-11-07: Why to sign up
+
+- Signed out, the main menu now explains that Dice Den has more than one web address and that progress saved without an account stays on the address you played it on, while an account carries it to every address and device. The × hides the note for good. The Sign up panel says the same.
+
 ## 2026-11-07: First-run tutorial, clone badges, Glass Set and Hoarder
 
 - Your very first **New run** starts the tutorial: a short practice round (**Quit tutorial** ends it any time). The tutorial now also shows the **menu** button and what is in it, how to **sell** a relic, every shelf in the shop, the **Sets / Dice / Collection** buttons and the main menu, and ends with **Start a real run**.
