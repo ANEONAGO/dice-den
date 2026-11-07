@@ -17,7 +17,7 @@ Every player-visible change, newest first. Play at https://aneonago.github.io/di
   - Clear the round as usual, or score twice the target and the Whale pays $10 plus a Rare or better relic.
   - Calling it gives up that round's tag.
 - New achievement: Whale Watcher.
-- Fixed: a Mirror face could copy a number above 6, which broke drawing that die.
+- Mirror faces can copy any number, including a Living or polyhedral die's number past 6; the face then shows the number itself (copying one used to break drawing that die).
 
 ## 2026-11-07: Curses, challenges, two new tables and a pile of new content
 
