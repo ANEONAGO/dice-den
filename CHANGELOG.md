@@ -2,6 +2,29 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-07: Face sets for the new faces, more achievements, Rules tab and table fixes
+
+- **Five new face sets**:
+  - **Funhouse**: 3+ Mirror faces, ×2 mult.
+  - **Deep Freeze**: 3+ Ice faces, +50 chips.
+  - **Fireworks**: 3+ Bomb faces, +100 chips.
+  - **Volley**: 3+ Arrow faces, +10 mult.
+  - **Arcade**: a Mirror, Ice, Bomb and Arrow face in one throw, ×3 mult.
+  - Like the others, each grows with every extra matching die.
+- **12 more achievements**, from Hot Streak (High-Low) and Point Made (Craps) to Face Collector, Grand Master, Natural 20 and the very hard Dawn Patrol.
+- **Achievements are easier to find**:
+  - The main menu shows your count and the next ones to go for, right above Continue.
+  - The in-run menu has an **Achievements** tab.
+  - The run summary lists the ones you earned that run.
+- **Rules tab**:
+  - Mult, Gold, Star and Heart now show as real dice, not plain coloured squares.
+  - Face descriptions no longer break one word per line.
+  - It now covers every gaming table (High-Low, Craps and the Prize Wheel too), curses, the Whale and modifiers.
+- **Gaming tables**:
+  - The money, the "This visit" total and the result line now wait until the dice or reels land, instead of giving the result away while they are still rolling.
+  - The tables, the Rules tab and the Codex no longer quote house edge or payout percentages.
+- Fixed: The Carver and The Engraver could set a die to a face it doesn't have.
+
 ## 2026-11-07: Balance fixes
 
 - **Bloodstone Set**: blood sacrifice now works three times a run at most. With Cloning Vat or enough Dice Packs it could save you forever.
