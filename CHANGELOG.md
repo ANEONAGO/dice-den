@@ -2,6 +2,15 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-08: Four engine relics
+
+- New Legendary relics, each a different road to huge scores (until now the only one was per-die multipliers like The Gilded Throne with Wingman dice):
+  - **Echo Chamber**: ×1.1 mult every time a die scores again (Red Seal, Twin Set, Double Take, Arrow faces...).
+  - **The Grand Ledger**: ×1.1 mult for every level of the hand you score.
+  - **Compound Interest**: ×(1 + your money / 100) mult, and every round you clear pays 10% interest on your money with no cap. It rewards saving instead of spending.
+  - **Iron Curtain**: ×1.2 mult for every thrown die you do not score, so big tables pay.
+  - Upgraded, each one grows faster.
+
 ## 2026-11-08: Four new dice sets
 
 - **Fortune Teller's Set**: start with 3 Arcana cards and 2 more Arcana slots, get an Arcana card every round you clear, and Arcana in the shop cost half. Unlock: use 10 Arcana cards in one run.
