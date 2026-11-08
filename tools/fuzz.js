@@ -86,7 +86,7 @@ function FUZZ(){
   if(G.pk){(G.pk.items||[]).forEach(x=>{if(x==null)v('pack','null pack item')});if(G.pk.kind=='relic')G.pk.items.forEach(x=>{if(!RL[x])v('pack','unknown relic in a pack')})}
   Object.entries(G.lv||{}).forEach(([k,n])=>{if(!(n>=0)||n!=Math.floor(n))v('levels','bad hand level '+k+'='+n)});
   if(G.phase=='idle'&&G.thrown&&!D.some(d=>d.thr))v('throw','thrown with no dice on the table');
-  if(G.phase=='bet'&&G.round%5==0&&!G.boss)v('boss','boss round without a boss');
+  if(G.phase=='bet'&&bossRound(G.round)&&!G.boss)v('boss','boss round without a boss');
   // The House (round cfg.win) carries two different known boss rules in G.boss.r
   if(G.boss&&(G.boss.id=='house'?!(Array.isArray(G.boss.r)&&G.boss.r.length==2&&G.boss.r[0]!=G.boss.r[1]&&G.boss.r.every(r=>BOSSES.some(b=>b.id==r))):!BOSSES.some(b=>b.id==G.boss.id)))v('boss','unknown boss');
   // the score preview matches itself and changes nothing (calc must be pure)

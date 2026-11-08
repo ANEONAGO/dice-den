@@ -2,6 +2,18 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-08: Four new dice sets
+
+- **Fortune Teller's Set**: start with 3 Arcana cards and 2 more Arcana slots, get an Arcana card every round you clear, and Arcana in the shop cost half. Unlock: use 10 Arcana cards in one run.
+- **Bounty Hunter Set**: every third round is a boss round, and each boss pays $10 and a relic. On the dice screen you can ban up to 2 bosses so they never show up in these runs. Unlock: beat 6 bosses in one run.
+- **Living Set**: every die is a Living die, so the faces you keep scoring grow and their opposites shrink. Unlock: grow a Living die's face to 12.
+- **Mirror Set**: face 1 of every die is a Mirror face, so a low roll copies the most common number instead. Unlock: score the Funhouse face set.
+- **Tutorial**: choosing **Keep playing** at the end now gives the practice run a starter kit, so you see sets and upgrades working:
+  - a merged relic set (Triple Threat and Pair Bond become Full Table) and Sixer;
+  - a Spark die, a Golden die, a Gold Seal, a Mult face and a Star face;
+  - Triplets at level 2 and $15.
+  - It is still practice: never saved and never on the boards.
+
 ## 2026-11-07: Face sets for the new faces, more achievements, Rules tab and table fixes
 
 - **Five new face sets**:
