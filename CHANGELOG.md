@@ -2,6 +2,11 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-08: Den Master Set
+
+- New very hard achievement **After Hours**: clear round 100. (Closing Time is for reaching it.)
+- It unlocks the **Den Master Set**: start with a random Legendary relic, and every round you clear adds ×0.1 to a multiplier on every throw for the rest of the run (×2 after 10 rounds, ×4 after 30). It is the strongest set in the Den, as a reward for going that deep should be.
+
 ## 2026-11-08: Scores with no ceiling, and three leaderboards
 
 - Scores no longer stop at 1e300: a throw, a round and a whole run now count as high as your build goes, shown in e notation (8.73e+1374). Deep endless targets keep climbing with them, so there is no wall any more. Nothing changes for scores below 1e300.
