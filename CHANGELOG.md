@@ -2,6 +2,12 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-08: Scores with no ceiling, and three leaderboards
+
+- Scores no longer stop at 1e300: a throw, a round and a whole run now count as high as your build goes, shown in e notation (8.73e+1374). Deep endless targets keep climbing with them, so there is no wall any more. Nothing changes for scores below 1e300.
+- **High Scores** now ranks three ways: **Rounds cleared** (the default), **Best throw** and **Total score**, on the all-time and daily boards, for Best per player and Every run alike. The column you rank by is highlighted.
+- Runs now post how many rounds they cleared, and your best throw and best total are kept on the boards apart from your best run.
+
 ## 2026-11-08: Score cap and a Duet fix
 
 - Scores now top out at 1e300 (a 1 with 300 zeros) for a throw, a round and a run. A big enough build could pass the largest number the game can hold and score "Infinity", which then vanished on a reload: the round score, the run total and your best throw were lost, and the run could not be posted. Targets stop at 1e305, so in deep endless the den eventually becomes a wall nobody can clear.
