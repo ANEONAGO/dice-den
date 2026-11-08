@@ -2,6 +2,11 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-08: Score cap and a Duet fix
+
+- Scores now top out at 1e300 (a 1 with 300 zeros) for a throw, a round and a run. A big enough build could pass the largest number the game can hold and score "Infinity", which then vanished on a reload: the round score, the run total and your best throw were lost, and the run could not be posted. Targets stop at 1e305, so in deep endless the den eventually becomes a wall nobody can clear.
+- **Duet** now does what it says: when you score Twins, only the two Twins dice score 2 extra times. It used to give every scored die the extra times, Wingman dice and Spillover extras included.
+
 ## 2026-11-08: Four engine relics
 
 - New Legendary relics, each a different road to huge scores (until now the only one was per-die multipliers like The Gilded Throne with Wingman dice):
