@@ -2,6 +2,17 @@
 
 Every player-visible change, newest first. Play at https://aneonago.github.io/dice-den/, https://diceden.web.app, https://algebraarchive.web.app, https://chancetheory.web.app, https://theoddsindex.web.app or https://samplespace.web.app (the same game everywhere).
 
+## 2026-11-09: Relic readouts, no more curses, and a Lucky Coin you can watch
+
+- Relics whose numbers change as you play now show them on a tag under their box: growing counters (Snowball, Rising Tide, Steady Hand and the rest), Metronome's next beat, The Oracle's number, the hand Main Event or Bounty Board names, Punch Card's countdown, Powder Keg's multiplier and blow-up chance, the Gilded Egg's sell value, and what Mimic, Reflection or Ringleader is copying.
+- Bosses that name something for the round show it under the score bar: The Sphinx's and The Snob's hand, what The Repo Man switched off, and the hands The Copycat has already seen.
+- Curses are gone: no cursed relic cards in the shop, no pact in the Back Alley, and no Hexed challenge or achievement. A cursed relic in a saved run becomes a plain one.
+- Discounts keep their cents instead of rounding: Bargain Bin, the Bullion Set, the Fortune Teller's Set and the Hold fee can make a price like $3.75 or $1.50.
+- The Oracle, upgraded, lets you pick one number in its relic panel: it names that number twice as often.
+- The Lucky Coin now flips for real: the coin pops out of its box, spins and lands on heads (gold, +mult) or tails, and its box keeps showing the last result.
+- The High Scores table has a When column: the date and time each score was set, in your own time zone.
+- The Codex had stopped loading its tables since 2026-11-07; it works again.
+
 ## 2026-11-08: Den Master Set
 
 - New very hard achievement **After Hours**: clear round 100. (Closing Time is for reaching it.)
